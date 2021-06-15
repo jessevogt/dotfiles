@@ -12,4 +12,4 @@ if [ "$SPIN" ]; then
 fi
 
 ln -sf ~/dotfiles/commonrc ~/.zshrc
-ls -sf ~/dotfiles/tmux.conf ~/.tmux.conf
+ln -sf ~/dotfiles/tmux.conf ~/.tmux.conf
