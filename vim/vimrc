@@ -13,6 +13,13 @@ set expandtab
 set shiftwidth=4
 set smarttab
 
+set noerrorbells 
+set novisualbell
+set t_vb=
+set belloff=all
+set visualbell t_vb=
+autocmd! GUIEnter * set vb t_vb=
+
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 
 set ruler
@@ -30,7 +37,6 @@ if has("gui_running")
     if has("gui_macvim")
         set guifont=Monaco:h12
         macmenu &File.Print key=<nop>
-        aunmenu File.Print
     endif
     colorscheme slate
 else
