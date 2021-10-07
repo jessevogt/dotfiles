@@ -12,6 +12,7 @@ PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%~%b ${vcs_info_msg_0_} $ '
 
 alias ls="ls -G"
 alias gpf="git push --force-with-lease"
+alias gp="git push"
 
 function is_env() {
     if [[ -f ~/.myenv ]]; then
