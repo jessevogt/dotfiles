@@ -9,16 +9,16 @@ if [ "$SPIN" ]; then
     echo "detected spin environment"
 
     function spin_install {
-        if type "$1" > /dev/null 2>&1
+        if type "$2" > /dev/null 2>&1
         then
-            echo "$1 already installed"
+            echo "$1 ($2) already installed"
         else
             echo "installing $1" 
             sudo apt-get install -y $1
         fi
     }
 
-    spin_install "rg"
+    spin_install "ripgrep" "rg"
 
     tar xvfz $scriptdir/vim/fzf/bin/fzf-*-linux_amd64.tar.gz -C $scriptdir/vim/fzf/bin
 
