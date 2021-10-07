@@ -41,5 +41,5 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 ln -sf $scriptdir/zshrc ~/.zshrc
-ln -sf $scriptdir/vim ~/.vim
+rm -rf ~/.vim && ln -sf $scriptdir/vim/ ~/.vim
 ln -sf $scriptdir/tmux.conf ~/.tmux.conf
