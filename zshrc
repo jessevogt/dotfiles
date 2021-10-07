@@ -16,27 +16,33 @@ alias gp="git push"
 
 function is_env() {
     if [[ -f ~/.myenv ]]; then
-        ! grep -e "^$1$" -- ~/.myenv
+        grep -e "^$1$" -- ~/.myenv > /dev/null 2>&1
     else
-        return 0
+        return 1
     fi
 }
 
-if [[ $(is_env "shopify_mac") ]]; then
-    echo "shopify_mac"
-    PATH=$PATH:/Users/jessevogt/src/github.com/Shopify/jessevogt/scripts
+if is_env "shopify_.*"
+then
+    echo "shopify"
 
-    if [[ -f /opt/dev/dev.sh ]]; then
-        . /opt/dev/dev.sh
-    fi
-
-    if [[ -f ~/.nix-profile/etc/profile.d/nix.sh ]]; then
-        . ~/.nix-profile/etc/profile.d/nix.sh
-    fi
-
-    [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
-fi
-
-if [[ $(is_env "shopify_.*") ]]; then
     alias style="dev style --include-branch-commits"
+
+    if is_env "shopify_mac"
+    then
+        echo "shopify_mac"
+        PATH=$PATH:/Users/jessevogt/src/github.com/Shopify/jessevogt/scripts
+
+        if [[ -f /opt/dev/dev.sh ]]; then
+            . /opt/dev/dev.sh
+        fi
+
+        if [[ -f ~/.nix-profile/etc/profile.d/nix.sh ]]; then
+            . ~/.nix-profile/etc/profile.d/nix.sh
+        fi
+
+        [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
+    fi
 fi
+
+
