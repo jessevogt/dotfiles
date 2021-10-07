@@ -36,3 +36,7 @@ if [[ $(is_env "shopify_mac") ]]; then
 
     [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
 fi
+
+if [[ $(is_env "shopify_.*") ]]; then
+    alias style="dev style --include-branch-commits"
+fi
