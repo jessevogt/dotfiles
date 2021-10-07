@@ -27,6 +27,14 @@ then
     echo "shopify"
 
     alias style="dev style --include-branch-commits"
+    
+    function watch-and-test() {
+        local test_args="${@[-1]}"
+        shift -p
+        echo "watching: $@"
+        echo "running: bin/rails test $test_args"
+        watchman-make -p $@ --run "bin/rails test $test_args"
+    }
 
     if is_env "shopify_mac"
     then
