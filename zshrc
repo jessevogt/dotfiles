@@ -24,14 +24,6 @@ export HISTSIZE=1000000000
 
 export PATH="$PATH:$DOTFILES_PATH/scripts"
 
-function is_env() {
-    if [[ -f ~/.myenv ]]; then
-        grep -e "^$1$" -- ~/.myenv > /dev/null 2>&1
-    else
-        return 1
-    fi
-}
-
 function setup_shopify() {
     echo "setting up shopify common"
     
@@ -62,15 +54,15 @@ function setup_shopify_mac() {
     [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
 }
 
-
-if is_env "shopify_.*"
-then
-    setup_shopify
-
-    if is_env "shopify_mac"
-    then
-        setup_shopify_mac
+function is_env() {
+    if [[ -f ~/.myenv ]]; then
+        grep -e "^$1$" -- ~/.myenv > /dev/null 2>&1
+    else
+        return 1
     fi
-fi
+}
 
+is_env "shopify_.*" && setup_shopify
+is_env "shopify_mac" && setup_shopify_mac
 
+true
