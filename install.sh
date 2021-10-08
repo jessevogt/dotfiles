@@ -38,6 +38,8 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     mac_install "rg"
     mac_install "fzf"
+
+    rm -rf ~/.hammerspoon && ln -sf $scriptdir/hammerspoon ~/.hammerspoon
 fi
 
 ln -sf $scriptdir/zshrc ~/.zshrc
