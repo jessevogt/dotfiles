@@ -141,6 +141,12 @@ function googleDocMarkListItemDone()
   hs.eventtap.keyStroke({'cmd', 'shift'}, 'X');
 end
 
+function chromeTabSearch()
+  local chrome = hs.application.find("Google Chrome")
+  chrome:allWindows()[1]:focus()
+  hs.eventtap.keyStroke({'shift','cmd'}, 'a');
+end
+
 --local H = hs.hotkey.modal.new({}, 'F20')
 --H:bind('', 'l', nil, hs.toggleConsole);
 
@@ -185,6 +191,8 @@ hs.hotkey.bind(HYPER0, 'T', typeDate);
 hs.hotkey.bind(HYPER1, 'home', moveMouseToNextScreen)
 
 hs.hotkey.bind(HYPER1, '/', foo);
+
+hs.hotkey.bind({'option'}, 't', chromeTabSearch)
 
 ampOnIcon = [[ASCII:
 .....1a..........AC..........E
