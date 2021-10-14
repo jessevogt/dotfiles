@@ -3,6 +3,26 @@ hs.application.runningApplications()
 local log = hs.logger.new('init','debug')
 log.i('Initializing') -- will print "[mymodule] Initializing" to the console
 
+function readMyEnv()
+  local filePath = os.getenv("HOME") .. "/.myenv"
+  local f = io.open(filePath, "r")
+  lines = {}
+  if f then
+    for line in io.lines(filePath) do
+      lines[#lines + 1] = line
+    end
+  end
+  f:close()
+  return lines
+end
+
+local env = readMyEnv()
+
+function isEnv(check)
+  return hs.fnutils.contains(env, check)
+end
+
+
 local moveMouseScreen = nil
 
 function moveMouseToNextScreen()
@@ -141,28 +161,35 @@ function googleDocMarkListItemDone()
   hs.eventtap.keyStroke({'cmd', 'shift'}, 'X');
 end
 
-function chromeTabSearch()
-  local chrome = hs.application.find("Google Chrome")
-  local windowToUse = hs.window.focusedWindow()
+function tabSearch()
+  if isEnv("shopify_mac") then
+    local chrome = hs.application.find("Google Chrome")
+    local windowToUse = hs.window.focusedWindow()
 
-  if windowToUse:application() ~= chrome then
-    local currentScreen = hs.screen.mainScreen()
-    windowToUse = hs.fnutils.find(
-      chrome:allWindows(),
-      function(win)
-        return win:screen() == currentScreen
+    if windowToUse:application() ~= chrome then
+      local currentScreen = hs.screen.mainScreen()
+      windowToUse = hs.fnutils.find(
+        chrome:allWindows(),
+        function(win)
+          return win:screen() == currentScreen
+        end
+      )
+
+      if windowToUse == nil then
+        windowToUse = chrome:allWindows()[1]
       end
-    )
-
-    if windowToUse == nil then
-      windowToUse = chrome:allWindows()[1]
     end
-  end
 
-  hs.timer.doAfter(0.001, function ()
-    windowToUse:focus()
-    hs.eventtap.keyStroke({'shift','cmd'}, 'a');
-  end)
+    hs.timer.doAfter(0.001, function ()
+      windowToUse:focus()
+      hs.eventtap.keyStroke({'shift','cmd'}, 'a');
+    end)
+  elseif isEnv("personal_mac") then
+    local firefox = hs.application.find("Firefox")
+    firefox:activate()
+    hs.eventtap.keyStroke({"cmd"}, "l")
+    hs.eventtap.keyStrokes("% ")
+  end
 end
 
 --local H = hs.hotkey.modal.new({}, 'F20')
@@ -210,7 +237,7 @@ hs.hotkey.bind(HYPER1, 'home', moveMouseToNextScreen)
 
 hs.hotkey.bind(HYPER1, '/', foo);
 
-hs.hotkey.bind({'option'}, 't', chromeTabSearch)
+hs.hotkey.bind({'option'}, 't', tabSearch)
 
 ampOnIcon = [[ASCII:
 .....1a..........AC..........E
