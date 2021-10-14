@@ -16,10 +16,6 @@ function readMyEnv()
   return lines
 end
 
-function isEnv(check)
-  return hs.fnutils.contains(env, check)
-end
-
 function getHostname()
   local f = io.popen("/bin/hostname")
   local hostname = f:read("*a") or ""
@@ -31,6 +27,9 @@ end
 local ENV = readMyEnv()
 local HOSTNAME = getHostname()
 
+function isEnv(check)
+  return hs.fnutils.contains(ENV, check)
+end
 
 local moveMouseScreen = nil
 
