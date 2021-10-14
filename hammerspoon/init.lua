@@ -159,25 +159,6 @@ function chromeTabSearch()
     end
   end
 
-  local windowIndex = hs.fnutils.indexOf(chrome:allWindows(), windowToUse);
-  log.f("index: %d, window: %s", windowIndex, windowToUse)
-
-  local success, output, err = hs.osascript.javascript(string.format([[
-    const app = Application("Chrome");
-    const win = app.windows()[%d];
-    const index = win.tabs().findIndex(tab => tab.url() == "chrome://newtab/");
-    if (index == -1) {
-        const tab = app.Tab({url: "chrome://newtab/"});
-        win.tabs.push(tab);
-        index = win.tabs().length - 1;
-    }
-    win.activeTabIndex = index + 1;
-  ]], windowIndex - 1))
-
-  log.f("%s", success)
-  log.f("%s", output)
-  log.f("%s", err)
-
   hs.timer.doAfter(0.001, function ()
     windowToUse:focus()
     hs.eventtap.keyStroke({'shift','cmd'}, 'a');
