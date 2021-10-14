@@ -16,11 +16,20 @@ function readMyEnv()
   return lines
 end
 
-local env = readMyEnv()
-
 function isEnv(check)
   return hs.fnutils.contains(env, check)
 end
+
+function getHostname()
+  local f = io.popen("/bin/hostname")
+  local hostname = f:read("*a") or ""
+  f:close()
+  hostname = string.gsub(hostname, "\n$", "")
+  return hostname
+end
+
+local ENV = readMyEnv()
+local HOSTNAME = getHostname()
 
 
 local moveMouseScreen = nil
@@ -117,7 +126,9 @@ end
 
 function foo()
     co = coroutine.create(function ()
-        status, body, headers = hs.http.get("http://192.168.102.5:5000/next")
+        status, body, headers = hs.http.get(
+          "http://192.168.102.5:5000/smart-next/" .. HOSTNAME
+        )
         log.i(status)
     end)
     coroutine.resume(co)
