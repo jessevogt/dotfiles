@@ -1,6 +1,6 @@
 hs.application.runningApplications()
 
-local log = hs.logger.new('init','debug')
+log = hs.logger.new('init','debug')
 log.i('Initializing') -- will print "[mymodule] Initializing" to the console
 
 function readMyEnv()
@@ -65,6 +65,24 @@ function baseMove(x, y, w, h)
   end
 end
 
+function findScreen(name)
+  return hs.fnutils.find(
+    hs.screen.allScreens(),
+    function (screen) return screen:name() == name end
+  )
+end
+
+local CENTER_TOP = findScreen("U32J59x")
+local CENTER_BOTTOM = findScreen("Built-in Retina Display")
+local LEFT = findScreen("BenQ GW2765")
+local RIGHT = findScreen("LG HDR 4K")
+
+local SCREEN_LAYOUT = {}
+SCREEN_LAYOUT[CENTER_TOP:id()] = { N=nil, S=CENTER_BOTTOM, E=RIGHT, W=LEFT }
+SCREEN_LAYOUT[CENTER_BOTTOM:id()] = { N=CENTER_TOP, S=nil, E=RIGHT, W=LEFT }
+SCREEN_LAYOUT[LEFT:id()] = { N=nil, S=nil, E=CENTER_TOP, W=nil }
+SCREEN_LAYOUT[RIGHT:id()] = { N=nil, S=nil, E=nil, W=CENTER_TOP }
+
 function moveToScreenFactory(dir)
   return function()
     local win = hs.window.focusedWindow()
@@ -72,10 +90,9 @@ function moveToScreenFactory(dir)
       log.i("windows was nil so not moving") 
       return
     end
-    if dir == 'N' then win:moveOneScreenNorth(0)
-    elseif dir == 'S' then win:moveOneScreenSouth(0)
-    elseif dir == 'E' then win:moveOneScreenEast(0)
-    elseif dir == 'W' then win:moveOneScreenWest(0)
+    local targetScreen = SCREEN_LAYOUT[win:screen():id()][dir]
+    if targetScreen ~= nil then
+      win:moveToScreen(targetScreen, false, true, 0) 
     end
   end
 end
