@@ -3,7 +3,7 @@
 scriptdir=`dirname "$BASH_SOURCE"`
 scriptdir=`realpath $scriptdir`
         
-if [ "$OSTYPE" == "linux-gnu" ]; then
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
     function linux_install {
         if type "$2" > /dev/null 2>&1
         then
