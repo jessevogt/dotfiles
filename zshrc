@@ -20,7 +20,12 @@ esac
 
 export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt'%B%~%b ${vcs_info_msg_0_} $ '
 
-alias ls="ls --color=auto"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    alias ls="ls -G"
+else
+    alias ls="ls --color=auto"
+fi
+
 alias gpf="git push --force-with-lease"
 alias gp="git push"
 
