@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 
-echo "\$SPIN=$SPIN"
-
 scriptdir=`dirname "$BASH_SOURCE"`
 scriptdir=`realpath $scriptdir`
         
-if [ "$SPIN" ]; then
-    echo "detected spin environment"
-
-    function spin_install {
+if [ "$OSTYPE" == "linux-gnu" ]; then
+    function linux_install {
         if type "$2" > /dev/null 2>&1
         then
             echo "$1 ($2) already installed"
@@ -18,11 +14,10 @@ if [ "$SPIN" ]; then
         fi
     }
 
-    spin_install "ripgrep" "rg"
+    linux_install "ripgrep" "rg"
 
     tar xvfz $scriptdir/vim/fzf/bin/fzf-*-linux_amd64.tar.gz -C $scriptdir/vim/fzf/bin
 
-    echo shopify_spin > ~/.myenv
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo "detected macos environment"
 
@@ -40,6 +35,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     mac_install "fzf"
 
     rm -rf ~/.hammerspoon && ln -sf $scriptdir/hammerspoon ~/.hammerspoon
+fi
+
+if [ "$SPIN" ]; then
+    echo "detected spin environment"
+    echo shopify_spin > ~/.myenv
 fi
 
 ln -sf $scriptdir/zshrc ~/.zshrc

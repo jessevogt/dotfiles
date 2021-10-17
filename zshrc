@@ -10,7 +10,7 @@ zstyle ':vcs_info:*' enable git
 setopt PROMPT_SUBST
 export PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%~%b ${vcs_info_msg_0_} $ '
 
-alias ls="ls -G"
+alias ls="ls --color=auto"
 alias gpf="git push --force-with-lease"
 alias gp="git push"
 
