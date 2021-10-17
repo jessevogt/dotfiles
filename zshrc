@@ -13,6 +13,9 @@ case $(hostname) in
     carrot*|jesse-sh-1*)
         host_prompt=''
         ;;
+    *.spin.dev)
+        host_prompt=' %2m'
+        ;;
     *)
         host_prompt=' %m'
         ;;
