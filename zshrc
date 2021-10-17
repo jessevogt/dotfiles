@@ -8,7 +8,17 @@ zstyle ':vcs_info:git:*' formats '%F{200}[%b%u%c]%f'
 zstyle ':vcs_info:*' enable git
 
 setopt PROMPT_SUBST
-export PROMPT='%(?.%F{green}√.%F{red}?%?)%f %B%~%b ${vcs_info_msg_0_} $ '
+
+case $(cat /etc/hostname) in
+    carrot)
+        host_prompt=''
+        ;;
+    *)
+        host_prompt=' %m '
+        ;;
+esac
+
+export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt'%B%~%b ${vcs_info_msg_0_} $ '
 
 alias ls="ls --color=auto"
 alias gpf="git push --force-with-lease"
