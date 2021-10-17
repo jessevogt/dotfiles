@@ -72,16 +72,32 @@ function findScreen(name)
   )
 end
 
-local CENTER_TOP = findScreen("U32J59x")
-local CENTER_BOTTOM = findScreen("Built-in Retina Display")
-local LEFT = findScreen("BenQ GW2765")
-local RIGHT = findScreen("LG HDR 4K")
+function setupMonitors()
+  local samsung_32 = findScreen("U32J59x")
+  local macbook = findScreen("Built-in Retina Display")
+  local benq_27 = findScreen("BenQ GW2765")
+  local lg_27 = findScreen("LG HDR 4K")
+  local screen_layout = {}
 
-local SCREEN_LAYOUT = {}
-SCREEN_LAYOUT[CENTER_TOP:id()] = { N=nil, S=CENTER_BOTTOM, E=RIGHT, W=LEFT }
-SCREEN_LAYOUT[CENTER_BOTTOM:id()] = { N=CENTER_TOP, S=nil, E=RIGHT, W=LEFT }
-SCREEN_LAYOUT[LEFT:id()] = { N=nil, S=nil, E=CENTER_TOP, W=nil }
-SCREEN_LAYOUT[RIGHT:id()] = { N=nil, S=nil, E=nil, W=CENTER_TOP }
+  if samsung_32 and macbook and benq_27 and lg_27 then
+    local center_top = samsung_32
+    local center_bottom = macbook
+    local left = benq_27
+    local right = lg_27
+
+    screen_layout[center_top:id()] = { N=nil, S=center_bottom, E=right, W=left }
+    screen_layout[center_bottom:id()] = { N=center_top, S=nil, E=right, W=left }
+    screen_layout[left:id()] = { N=nil, S=nil, E=center_top, W=nil }
+    screen_layout[right:id()] = { N=nil, S=nil, E=nil, W=center_top }
+  elseif samsung_32 and macbook then
+    screen_layout[samsung_32:id()] = { N=nil, S=macbook, E=macbook, W=nil }
+    screen_layout[macbook:id()] = { N=samsung_32, S=nil, E=nil, W=samsung_32 }
+  end
+
+  return screen_layout
+end
+
+SCREEN_LAYOUT = setupMonitors()
 
 function moveToScreenFactory(dir)
   return function()
