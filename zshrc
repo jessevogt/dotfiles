@@ -9,16 +9,16 @@ zstyle ':vcs_info:*' enable git
 
 setopt PROMPT_SUBST
 
-case $(cat /etc/hostname) in
-    carrot)
+case $(hostname) in
+    carrot*)
         host_prompt=''
         ;;
     *)
-        host_prompt=' %m '
+        host_prompt=' %m'
         ;;
 esac
 
-export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt'%B%~%b ${vcs_info_msg_0_} $ '
+export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt' %B%~%b ${vcs_info_msg_0_} $ '
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ls="ls -G"
