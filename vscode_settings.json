@@ -1,0 +1,12 @@
+{
+  "editor.bracketPairColorization.enabled": true,
+  "editor.cursorStyle": "line",
+  "editor.guides.bracketPairs": true,
+  "editor.lineNumbers": "on",
+  "editor.minimap.enabled": false,
+  "editor.rulers": [120],
+  "editor.tabSize": 2,
+  "files.autoSave": "afterDelay",
+  "window.title": "${activeEditorMedium}${separator}${rootName}",
+  "workbench.colorTheme": "GitHub Plus"
+}

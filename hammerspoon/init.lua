@@ -274,7 +274,7 @@ hs.hotkey.bind(HYPER0, 'M', cuSlackMeeting);
 hs.hotkey.bind(HYPER0, 'F', focusWindow);
 hs.hotkey.bind(HYPER1, 'F', unfocusWindow);
 hs.hotkey.bind(HYPER0, 'L', googleDocMarkListItemDone);
-hs.hotkey.bind(HYPER0, 'T', typeDate);
+-- hs.hotkey.bind(HYPER0, 'T', typeDate);
 
 hs.hotkey.bind(HYPER1, 'home', moveMouseToNextScreen)
 

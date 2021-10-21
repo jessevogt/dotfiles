@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -uxe
 
 scriptdir=`dirname "$BASH_SOURCE"`
 scriptdir=`realpath $scriptdir`
@@ -18,6 +19,8 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
     tar xvfz $scriptdir/vim/fzf/bin/fzf-*-linux_amd64.tar.gz -C $scriptdir/vim/fzf/bin
 
+    vscode_settings_dir="$HOME/.config/Code/User"
+
 elif [[ "$OSTYPE" == "darwin"* ]]; then
     echo "detected macos environment"
 
@@ -35,9 +38,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     mac_install "fzf"
 
     rm -rf ~/.hammerspoon && ln -sf $scriptdir/hammerspoon ~/.hammerspoon
+    
+    vscode_settings_dir="$HOME/Library/Application Support/Code/User"
 fi
 
-if [ "$SPIN" ]; then
+if [[ "${SPIN:=NOT_SPIN}" != "NOT_SPIN" ]]; then
     echo "detected spin environment"
     echo shopify_spin > ~/.myenv
 fi
@@ -45,3 +50,4 @@ fi
 ln -sf $scriptdir/zshrc ~/.zshrc
 rm -rf ~/.vim && ln -sf $scriptdir/vim/ ~/.vim
 ln -sf $scriptdir/tmux.conf ~/.tmux.conf
+mkdir -p "$vscode_settings_dir" && ln -sf "$scriptdir/vscode_settings.json" "$vscode_settings_dir/settings.json"
