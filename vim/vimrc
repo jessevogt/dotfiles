@@ -22,6 +22,7 @@ autocmd! GUIEnter * set vb t_vb=
 
 autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
 autocmd FileType lua setlocal shiftwidth=2 tabstop=2
+autocmd FileType json setlocal shiftwidth=2 tabstop=2
 
 set ruler
 set number
