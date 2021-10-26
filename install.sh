@@ -5,13 +5,22 @@ scriptdir=`dirname "$BASH_SOURCE"`
 scriptdir=`realpath $scriptdir`
         
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    function safe_sudo {
+        if type sudo > /dev/null 2>&1
+        then
+            sudo $@
+        else
+            $@
+        fi
+    }
+
     function linux_install {
         if type "$2" > /dev/null 2>&1
         then
             echo "$1 ($2) already installed"
         else
             echo "installing $1" 
-            sudo apt-get install -y $1
+            safe_sudo apt-get install -y $1
         fi
     }
 
