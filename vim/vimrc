@@ -40,10 +40,9 @@ if has("gui_running")
         set guifont=Monaco:h12
         macmenu &File.Print key=<nop>
     endif
-    colorscheme slate
-else
-    colorscheme morning
 endif
+
+colorscheme slate
 
 nnoremap <silent> <D-p> :FZF<cr>
 inoremap <silent> <D-p> <Esc>:FZF<cr>

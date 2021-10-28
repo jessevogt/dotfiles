@@ -50,7 +50,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 
     $scriptdir/karabiner/generate_karabiner_json.py $scriptdir/karabiner/karabiner.json
     mkdir -p ~/.config
-    ln -Ffsh $scriptdir/karabiner/karabiner.json ~/.config/karabiner
+    ln -Ffsh $scriptdir/karabiner ~/.config/karabiner
     
     vscode_settings_dir="$HOME/Library/Application Support/Code/User"
 fi
