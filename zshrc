@@ -10,7 +10,7 @@ zstyle ':vcs_info:*' enable git
 setopt PROMPT_SUBST
 
 case $(hostname) in
-    carrot*|jesse-sh-1*)
+    carrot*|jesse-sh-1*|circleup*)
         host_prompt=''
         ;;
     *.spin.dev)

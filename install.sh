@@ -2,7 +2,7 @@
 set -uxe
 
 scriptdir=`dirname "$BASH_SOURCE"`
-scriptdir=`realpath $scriptdir`
+scriptdir=`cd $scriptdir; pwd -P`
         
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     function safe_sudo {
@@ -46,7 +46,11 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     mac_install "rg"
     mac_install "fzf"
 
-    rm -rf ~/.hammerspoon && ln -sf $scriptdir/hammerspoon ~/.hammerspoon
+    ln -Ffsh $scriptdir/hammerspoon ~/.hammerspoon
+
+    $scriptdir/karabiner/generate_karabiner_json.py $scriptdir/karabiner/karabiner.json
+    mkdir -p ~/.config
+    ln -Ffsh $scriptdir/karabiner/karabiner.json ~/.config/karabiner
     
     vscode_settings_dir="$HOME/Library/Application Support/Code/User"
 fi

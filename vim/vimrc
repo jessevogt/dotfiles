@@ -42,7 +42,7 @@ if has("gui_running")
     endif
     colorscheme slate
 else
-    colorscheme slate
+    colorscheme morning
 endif
 
 nnoremap <silent> <D-p> :FZF<cr>
