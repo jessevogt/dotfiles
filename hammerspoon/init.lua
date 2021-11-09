@@ -3,6 +3,8 @@ hs.application.runningApplications()
 log = hs.logger.new('init','debug')
 log.i('Initializing') -- will print "[mymodule] Initializing" to the console
 
+hs.openConsole()
+
 function readMyEnv()
   local filePath = os.getenv("HOME") .. "/.myenv"
   local f = io.open(filePath, "r")
@@ -158,10 +160,10 @@ end
 
 function foo()
     co = coroutine.create(function ()
-        status, body, headers = hs.http.get(
-          "http://192.168.102.5:5000/smart-next/" .. HOSTNAME
-        )
-        log.i(status)
+      local url = "http://192.168.102.5:5000/smart-next/" .. HOSTNAME
+      log.i(url)
+      status, body, headers = hs.http.get(url)
+      log.i(status)
     end)
     coroutine.resume(co)
 end
@@ -250,6 +252,9 @@ hs.hotkey.bind(HYPER0, 'd', baseMove(0.50, 0.00, 0.50, 1.00))  -- split right
 hs.hotkey.bind(HYPER0, '1', baseMove(0.00, 0.00, 1.00, 0.33)) -- top third
 hs.hotkey.bind(HYPER0, '2', baseMove(0.00, 0.33, 1.00, 0.33)) -- middle third
 hs.hotkey.bind(HYPER0, '3', baseMove(0.00, 0.66, 1.00, 0.34)) -- bottom third
+
+hs.hotkey.bind(HYPER0, hs.keycodes.map["pad1"], baseMove(0.00, 0.00, 1.00, 0.25)) -- first fourth
+hs.hotkey.bind(HYPER0, hs.keycodes.map["pad2"], baseMove(0.00, 0.25, 1.00, 0.25)) -- second fourth
 
 hs.hotkey.bind(HYPER1, '1', baseMove(0.00, 0.00, 0.33, 1.00)) -- top third
 hs.hotkey.bind(HYPER1, '2', baseMove(0.33, 0.00, 0.33, 1.00)) -- middle third
