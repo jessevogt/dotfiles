@@ -1,3 +1,5 @@
+export DOTFILES_PATH=$(dirname $(readlink $HOME/.zshrc))
+
 autoload -Uz vcs_info
 precmd_functions+=( vcs_info )
 
