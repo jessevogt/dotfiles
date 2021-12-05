@@ -8,5 +8,6 @@
   "editor.tabSize": 2,
   "files.autoSave": "afterDelay",
   "window.title": "${activeEditorMedium}${separator}${rootName}",
-  "workbench.colorTheme": "GitHub Plus"
+  "workbench.colorTheme": "GitHub Plus",
+  "editor.fontSize": 14
 }
