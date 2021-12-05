@@ -1,3 +1,4 @@
 .*.swp
 vim/.netrwhist
 vim/fzf/bin/fzf
+karabiner/automatic_backups

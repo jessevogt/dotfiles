@@ -12,7 +12,7 @@ zstyle ':vcs_info:*' enable git
 setopt PROMPT_SUBST
 
 case $(hostname) in
-    carrot*|jesse-sh-1*|circleup*)
+    carrot*|jesse-sh-*|circleup*)
         host_prompt=''
         ;;
     *.spin.dev)
@@ -27,6 +27,7 @@ export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt' %B%~%b ${vcs_info_ms
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ls="ls -G"
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 else
     alias ls="ls --color=auto"
 fi

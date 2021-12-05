@@ -3,6 +3,15 @@ set -uxe
 
 scriptdir=`dirname "$BASH_SOURCE"`
 scriptdir=`cd $scriptdir; pwd -P`
+
+function setup_symlink_dir {
+    local source="$1"
+    local dest="$2"
+
+    mkdir -p "$dest"/..
+    rm -rf "$dest"
+    ln -Ffsh "$source" "$dest"
+}
         
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     function safe_sudo {
@@ -46,11 +55,10 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     mac_install "rg"
     mac_install "fzf"
 
-    ln -Ffsh $scriptdir/hammerspoon ~/.hammerspoon
+    setup_symlink_dir "$scriptdir/hammerspoon" ~/.hammerspoon
 
     $scriptdir/karabiner/generate_karabiner_json.py $scriptdir/karabiner/karabiner.json
-    mkdir -p ~/.config
-    ln -Ffsh $scriptdir/karabiner ~/.config/karabiner
+    setup_symlink_dir $scriptdir/karabiner ~/.config/karabiner
     
     vscode_settings_dir="$HOME/Library/Application Support/Code/User"
 fi
