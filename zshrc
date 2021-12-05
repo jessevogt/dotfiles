@@ -27,6 +27,9 @@ export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt' %B%~%b ${vcs_info_ms
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ls="ls -G"
+
+    export PATH="$PATH:/Applications/MacVim.app/Contents/bin/"
+
     eval "$(/opt/homebrew/bin/brew shellenv)"
 else
     alias ls="ls --color=auto"

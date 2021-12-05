@@ -30,7 +30,11 @@ set number
 if has("linux")
     set rtp+=~/.vim/fzf
 elseif has("mac")
-    set rtp+=/usr/local/opt/fzf
+    if isdirectory("/usr/local/opt/fzf")
+        set rtp+=/usr/local/opt/fzf
+    elseif isdirectory("/opt/homebrew/opt/fzf")
+        set rtp+=/opt/homebrew/opt/fzf
+    endif
 endif
 
 set rtp+=~/.vim/plugin

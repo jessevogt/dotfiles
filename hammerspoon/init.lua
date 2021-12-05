@@ -281,6 +281,18 @@ hs.hotkey.bind(HYPER1, 'F', unfocusWindow);
 hs.hotkey.bind(HYPER0, 'L', googleDocMarkListItemDone);
 -- hs.hotkey.bind(HYPER0, 'T', typeDate);
 
+hs.hotkey.bind(
+  {'ctrl', 'option'}, 'tab',
+  function()
+    hs.timer.doAfter(
+      0.01,
+      function ()
+        hs.osascript.applescript("tell application \"System Events\" to key code 126 using control down")
+      end
+    )
+  end
+)
+
 hs.hotkey.bind(HYPER1, 'home', moveMouseToNextScreen)
 
 hs.hotkey.bind(HYPER1, '/', foo);
