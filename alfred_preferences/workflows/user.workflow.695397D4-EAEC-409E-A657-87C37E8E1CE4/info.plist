@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string></string>
+	<key>connections</key>
+	<dict>
+		<key>72A76B1A-721F-487A-88F7-D4D792DFDDF5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>2D092162-32D1-4B2A-AB13-1933DCCA9C64</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string></string>
+	<key>description</key>
+	<string></string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>mail</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>script</key>
+				<string>// ObjC.import('AppKit'); // needed for $.NSScreen
+
+function findTab(url) {
+	const chrome = Application("Google Chrome");
+	const windows = chrome.windows();
+	const windowsLength = windows.length;
+	
+	for (let windowIndex = 0; windowIndex &lt; windowsLength; ++windowIndex) {
+		const window = windows[windowIndex];
+		const tabs = window.tabs();
+		const tabsLength = tabs.length;
+		
+		for (let tabIndex = 0; tabIndex &lt; tabsLength; ++tabIndex) {
+			const tab = tabs[tabIndex];
+			
+			if (tab.url().includes(url)) {
+				return { app: chrome, window, tabIndex: tabIndex + 1 };
+			}
+		}
+	}
+	
+	return null;
+}
+
+function focus(url) {
+	const tabInfo = findTab(url);
+	const bounds = tabInfo.window.bounds();
+	const primaryScreenDims = getPrimaryScreenDims();
+	
+	tabInfo.window.bounds = {
+		x: primaryScreenDims.x + Math.max((primaryScreenDims.width - bounds.width) / 2, 0),
+		y: primaryScreenDims.y + Math.max((primaryScreenDims.height - bounds.height) / 2, 0),
+		width: bounds.width,
+		height: bounds.height
+	};
+	
+	tabInfo.app.activate();
+	tabInfo.window.visible = true;
+	tabInfo.window.activeTabIndex = tabInfo.tabIndex;
+	tabInfo.window.index = 1;
+	
+}
+
+function getPrimaryScreenDims() {
+	return {"x":0, "y":0, "width":3840, "height":2160};
+	
+	const screens = $.NSScreen.screens;
+	const screenCount = parseInt(screens.count);
+	for (let screenIdx = 0; screenIdx &lt; screenCount - 1; ++screenIdx) {
+		const frame = screens.objectAtIndex(screenIdx).frame;
+		const origin = frame.origin;
+		const originX = origin.x;
+
+		if (originX === 0) {
+			const size = frame.size;
+			return {
+				x: originX,
+				y: origin.y,
+				width: size.width,
+				height: size.height
+			}
+		}
+	}
+	return null;
+}
+
+focus("mail.google.com")</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>7</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>2D092162-32D1-4B2A-AB13-1933DCCA9C64</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>mail</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Mail</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>72A76B1A-721F-487A-88F7-D4D792DFDDF5</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>2D092162-32D1-4B2A-AB13-1933DCCA9C64</key>
+		<dict>
+			<key>xpos</key>
+			<integer>515</integer>
+			<key>ypos</key>
+			<integer>200</integer>
+		</dict>
+		<key>72A76B1A-721F-487A-88F7-D4D792DFDDF5</key>
+		<dict>
+			<key>xpos</key>
+			<integer>260</integer>
+			<key>ypos</key>
+			<integer>210</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
