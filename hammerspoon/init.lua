@@ -1,4 +1,5 @@
 hs.application.runningApplications()
+hs.allowAppleScript(true);
 
 log = hs.logger.new('init','debug')
 log.i('Initializing') -- will print "[mymodule] Initializing" to the console
@@ -61,6 +62,8 @@ function baseMove(x, y, w, h)
     local win = hs.window.focusedWindow()
     if win == nil then
         return
+
+
     end
 
     win:moveToUnit({x=x, y=y, w=w, h=h}, 0)
@@ -406,3 +409,46 @@ end
 
 -- tpadLocation:setIcon(tpadGoneIcon)
 -- tpadLocation:setClickCallback(toggleTPadLocation)
+--
+--
+
+
+function focusTab(urlPart)
+  success, output, rawOutput = hs.osascript.javascript(string.format([[
+  (() => {
+    const chrome = Application("Google Chrome");
+
+    function findTab(url) {
+    	const windows = chrome.windows();
+    	const windowsLength = windows.length;
+    	
+    	for (let windowIndex = 0; windowIndex < windowsLength; ++windowIndex) {
+    		const window = windows[windowIndex];
+    		const tabs = window.tabs();
+    		const tabsLength = tabs.length;
+    		
+    		for (let tabIndex = 0; tabIndex < tabsLength; ++tabIndex) {
+    			const tab = tabs[tabIndex];
+    			
+    			if (tab.url().includes(url)) {
+    				return { window: window.id(), tab: tabIndex };
+    			}
+    		}
+    	}
+    	
+    	return null;
+    }
+
+    return findTab("%s");
+  })();
+  ]], urlPart))
+
+  log.i(hs.inspect(output))
+
+  chrome = hs.application.find("Google Chrome")
+
+  hs.fnutils.map(chrome:allWindows(), function (w) log.i(w:id(), w:title()) end)
+
+  chrome:activate()
+  hs.timer.doAfter(0.001, function() chrome:allWindows()[output["window"]]:focus() end)
+end

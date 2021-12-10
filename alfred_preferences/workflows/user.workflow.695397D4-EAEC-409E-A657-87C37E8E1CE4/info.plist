@@ -40,8 +40,11 @@
 				<key>script</key>
 				<string>// ObjC.import('AppKit'); // needed for $.NSScreen
 
+
 function findTab(url) {
 	const chrome = Application("Google Chrome");
+	chrome.includeStandardAdditions = true
+	
 	const windows = chrome.windows();
 	const windowsLength = windows.length;
 	
@@ -63,6 +66,20 @@ function findTab(url) {
 }
 
 function focus(url) {
+	const systemEvents = Application("System Events");
+	const processes = systemEvents.processes;
+	const procCount = processes.length;
+	let googleChromeProc = null;
+
+	for (let i = 0; i &lt; procCount; ++i) {
+		const proc = processes[i];
+		if (proc.name() == "Google Chrome") {
+			this.console.log(i);
+			googleChromeProc = proc;
+			break;
+		}
+	}
+
 	const tabInfo = findTab(url);
 	const bounds = tabInfo.window.bounds();
 	const primaryScreenDims = getPrimaryScreenDims();
@@ -75,10 +92,12 @@ function focus(url) {
 	};
 	
 	tabInfo.app.activate();
+	
 	tabInfo.window.visible = true;
 	tabInfo.window.activeTabIndex = tabInfo.tabIndex;
 	tabInfo.window.index = 1;
-	
+
+	systemEvents.perform(googleChromeProc.windows[tabInfo.window.id() - 1].actions["AXRaise"]);
 }
 
 function getPrimaryScreenDims() {
@@ -104,7 +123,11 @@ function getPrimaryScreenDims() {
 	return null;
 }
 
-focus("mail.google.com")</string>
+function main() {
+	focus("mail.google.com")
+}
+
+main()</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
@@ -148,9 +171,9 @@ focus("mail.google.com")</string>
 		<key>2D092162-32D1-4B2A-AB13-1933DCCA9C64</key>
 		<dict>
 			<key>xpos</key>
-			<integer>515</integer>
+			<integer>465</integer>
 			<key>ypos</key>
-			<integer>200</integer>
+			<integer>210</integer>
 		</dict>
 		<key>72A76B1A-721F-487A-88F7-D4D792DFDDF5</key>
 		<dict>

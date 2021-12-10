@@ -15,8 +15,8 @@ case $(hostname) in
     carrot*|jesse-sh-*|circleup*)
         host_prompt=''
         ;;
-    *.spin.dev)
-        host_prompt=' %2m'
+    spin)
+        host_prompt=" $(cat /etc/spin/machine/fqdn | cut -d"." -f1) 🌪 "
         ;;
     *)
         host_prompt=' %m'
