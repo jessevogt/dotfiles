@@ -1,5 +1,9 @@
 #!/usr/bin/osascript
 
+use framework "Foundation"
+use framework "AppKit"
+use scripting additions
+
 -- https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/ManipulateText.html
 on findAndReplaceInText(theText, theSearchString, theReplacementString)
 	set AppleScript's text item delimiters to theSearchString
@@ -55,9 +59,25 @@ on listTabs()
 	return tabInfo
 end listTabs
 
-on raiseTabByWindowIdAndTabIndex(windowId, tabIndex)
+on raiseTabByWindowIdAndTabIndex(windowId, tabIndex, mainFocus)
 	tell application "Google Chrome"
 		set aWindow to item 1 of (windows whose id is windowId)
+
+        set newX to 0
+        set newY to 0
+
+        if mainFocus then
+            set mainFrame to ((item 1 of (current application's NSScreen's screens() as list))'s frame as list)
+            set mainFrameWidth to item 1 of (item 2 of mainFrame)
+            set mainFrameHeight to item 2 of (item 2 of mainFrame)
+
+            set aBounds to (bounds of aWindow as list)
+            set windowWidth to (item 3 of aBounds) - (item 1 of aBounds)
+            set windowHeight to (item 4 of aBounds) - (item 2 of aBounds)
+
+            set newX to (mainFrameWidth - windowWidth) / 2 
+            set newY to (mainFrameHeight - windowHeight) / 2
+        end
 		
 		activate
 		
@@ -66,14 +86,23 @@ on raiseTabByWindowIdAndTabIndex(windowId, tabIndex)
 		set active tab index of aWindow to tabIndex
 		
 		set searchTitle to (title of aWindow as string) & " - Google Chrome"
+                    
 		
 		tell application "System Events" to tell process "Google Chrome"
-			repeat with pWindow in windows
-				if (title of pWindow as string) is searchTitle then
-					perform action "AXRaise" of pWindow
-					return
-				end if
-			end repeat
+            set windowTitles to item 1 of {title} of windows
+            set windowTitleCount to length of windowTitles
+            repeat with windowIndex from 1 to windowTitleCount
+                set windowTitle to item windowIndex of windowTitles
+                if (offset of "Shopify Mail" in windowTitle) is greater than 0 then
+                    set pWindow to item windowIndex of windows
+                    perform action "AXRaise" of pWindow
+
+                    if mainFocus then
+                        set pWindow's position to {newX, newY}
+                    end
+                    return
+                end if
+            end repeat
 		end tell
 	end tell
 end raiseTabByWindowIdAndTabIndex
@@ -93,7 +122,7 @@ on findTab(searchTerm)
     repeat with tabInfoIndex from 1 to tabInfosCount
         set tabInfo to item tabInfoIndex of tabInfos
         if (offset of searchTerm in (url of tabInfo)) greater than 0 then
-            raiseTabByWindowIdAndTabIndex(windowId of tabInfo, tabIndex of tabInfo)
+            raiseTabByWindowIdAndTabIndex(windowId of tabInfo, tabIndex of tabInfo, true)
             return
         end
     end
@@ -127,7 +156,7 @@ on run argv
     else if command is "showTabByWindowIdAndTabIndex" then
         set windowId to item 1 of argv as number
         set tabIndex to item 2 of argv as number
-        raiseTabByWindowIdAndTabIndex(windowId, tabIndex)
+        raiseTabByWindowIdAndTabIndex(windowId, tabIndex, false)
     else if command is "focusTabByUrl" then
         set searchUrl to system attribute "alfred_chrome_control_mode_arg"
         if searchUrl is "" then
