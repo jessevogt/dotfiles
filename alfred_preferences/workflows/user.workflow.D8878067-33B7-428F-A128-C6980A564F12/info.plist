@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string></string>
+	<key>connections</key>
+	<dict>
+		<key>9EB648D4-E9CC-4C25-B704-A111743B62C9</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C6632A99-0701-49EE-88C1-757F9F6376BA</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>C6632A99-0701-49EE-88C1-757F9F6376BA</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>8F580F09-CEAD-4420-BD16-B3205A9DE889</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string></string>
+	<key>description</key>
+	<string></string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Find Chrome Tab</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argument</key>
+				<string>{query}</string>
+				<key>passthroughargument</key>
+				<true/>
+				<key>variables</key>
+				<dict>
+					<key>alfred_chrome_control_mode</key>
+					<string>showTabByWindowIdAndTabIndex</string>
+				</dict>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.utility.argument</string>
+			<key>uid</key>
+			<string>C6632A99-0701-49EE-88C1-757F9F6376BA</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string></string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>/Users/jesse/dotfiles/alfred/alfred_chrome_control.applescript</string>
+				<key>type</key>
+				<integer>8</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8F580F09-CEAD-4420-BD16-B3205A9DE889</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>68</integer>
+				<key>keyword</key>
+				<string>t</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>script</key>
+				<string>on listTabs()	set tabInfo to {}	tell application "Google Chrome"		repeat with aWindow in windows			set tabCounter to 0			repeat with aTab in tabs of aWindow				set tabCounter to tabCounter + 1				set end of tabInfo to ¬					{tabIndex:tabCounter, windowId:(id of aWindow), tabUrl:(URL of aTab), tabTitle:(title of aTab)} ¬						as record			end repeat		end repeat	end tell	return tabInfoend listTabs-- https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/ManipulateText.htmlon findAndReplaceInText(theText, theSearchString, theReplacementString)	set AppleScript's text item delimiters to theSearchString	set theTextItems to every text item of theText	set AppleScript's text item delimiters to theReplacementString	set theText to theTextItems as string	set AppleScript's text item delimiters to ""	return theTextend findAndReplaceInTexton jsonSafeString(str)	return findAndReplaceInText(str, "\"", "\\\"")end jsonSafeStringon findTab(searchTerm)	tell application "Google Chrome"		repeat with aWindow in windows			set tabCounter to 0			repeat with aTab in tabs of aWindow				set tabCounter to tabCounter + 1				if ((URL of aTab) contains searchTerm) or ((title of aTab) contains searchTerm) then					tell application "Google Chrome" to activate										if index of aWindow is not 1 then						set visible of aWindow to true						set index of aWindow to 1					end if										set active tab index of aWindow to tabCounter										tell application "System Events" to tell process "Google Chrome"						set pWindowCounter to 0												repeat with pWindow in windows							set pWindowCount to pWindowCounter + 1														try								if (title of pWindow as string) = (title of aWindow) then									exit repeat								end if							on error errStr number errNum								log (errStr)								log (errNum)							end try						end repeat												perform action "AXRaise" of window pWindowCounter					end tell										return				end if			end repeat		end repeat	end tellend findTabon run argv	set command to "listtabs"	try		if (item 1 of argv) is "findtab" then			set command to "findtab"		end if	on error errStr number errNum	end try		if command = "listtabs" then		set tabList to listTabs()		set tabListLength to length of tabList		set output to "{ \"items\": ["				repeat with i from 1 to tabListLength			set tabRecord to item i of tabList			set output to output &amp; "{\"title\":\"" &amp; jsonSafeString(tabTitle of tabRecord) &amp; ¬				"\",\"subtitle\":\"" &amp; jsonSafeString(tabUrl of tabRecord) &amp; "\"}"						if i is not tabListLength then				set output to output &amp; ","			end if		end repeat				return output &amp; "]}"	end ifend run</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>/Users/jesse/dotfiles/alfred/alfred_chrome_control.applescript</string>
+				<key>subtext</key>
+				<string></string>
+				<key>title</key>
+				<string>Google Chrome Tab Search</string>
+				<key>type</key>
+				<integer>8</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9EB648D4-E9CC-4C25-B704-A111743B62C9</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>8F580F09-CEAD-4420-BD16-B3205A9DE889</key>
+		<dict>
+			<key>xpos</key>
+			<integer>845</integer>
+			<key>ypos</key>
+			<integer>395</integer>
+		</dict>
+		<key>9EB648D4-E9CC-4C25-B704-A111743B62C9</key>
+		<dict>
+			<key>xpos</key>
+			<integer>435</integer>
+			<key>ypos</key>
+			<integer>400</integer>
+		</dict>
+		<key>C6632A99-0701-49EE-88C1-757F9F6376BA</key>
+		<dict>
+			<key>xpos</key>
+			<integer>695</integer>
+			<key>ypos</key>
+			<integer>320</integer>
+		</dict>
+	</dict>
+	<key>variables</key>
+	<dict>
+		<key>alfred_chrome_control_mode</key>
+		<string>listTabs</string>
+	</dict>
+	<key>version</key>
+	<string></string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>

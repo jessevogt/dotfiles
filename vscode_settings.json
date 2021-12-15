@@ -10,5 +10,6 @@
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "workbench.colorTheme": "GitHub Plus",
   "editor.fontSize": 14,
-  "diffEditor.renderSideBySide": false
+  "diffEditor.renderSideBySide": false,
+  "window.zoomLevel": 1
 }

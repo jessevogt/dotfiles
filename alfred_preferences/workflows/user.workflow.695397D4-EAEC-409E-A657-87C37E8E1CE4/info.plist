@@ -131,9 +131,9 @@ main()</string>
 				<key>scriptargtype</key>
 				<integer>1</integer>
 				<key>scriptfile</key>
-				<string></string>
+				<string>/Users/jesse/dotfiles/alfred/alfred_chrome_control.applescript</string>
 				<key>type</key>
-				<integer>7</integer>
+				<integer>8</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -183,6 +183,15 @@ main()</string>
 			<integer>210</integer>
 		</dict>
 	</dict>
+	<key>variables</key>
+	<dict>
+		<key>alfred_chrome_control_mode</key>
+		<string>focusTabByUrl</string>
+		<key>alfred_chrome_control_mode_arg</key>
+		<string>mail.google.com</string>
+	</dict>
+	<key>version</key>
+	<string></string>
 	<key>webaddress</key>
 	<string></string>
 </dict>

@@ -90,3 +90,5 @@ is_env "shopify_.*" && setup_shopify
 is_env "shopify_mac" && setup_shopify_mac
 
 true
+
+[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
