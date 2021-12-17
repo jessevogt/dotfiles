@@ -30,7 +30,13 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 
     export PATH="$PATH:/Applications/MacVim.app/Contents/bin/"
 
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    if [[ -f /opt/homebrew/bin/brew ]]; then
+        eval $(/opt/homebrew/bin/brew shellenv)
+    elif [[ -f /usr/local/bin/brew ]]; then
+        eval $(/usr/local/bin/brew shellenv)
+    else
+        echo "HOMEBREW NOT FOUND"
+    fi
 else
     alias ls="ls --color=auto"
 fi
@@ -89,6 +95,10 @@ function is_env() {
 is_env "shopify_.*" && setup_shopify
 is_env "shopify_mac" && setup_shopify_mac
 
-true
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jesse/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jesse/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
-[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jesse/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jesse/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+true
