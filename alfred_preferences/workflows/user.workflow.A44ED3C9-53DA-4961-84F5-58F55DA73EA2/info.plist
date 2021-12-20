@@ -64,7 +64,7 @@
 				<key>scriptfile</key>
 				<string>/Users/jesse/src/github.com/Shopify/jessevogt/scripts/isospin_config.rb</string>
 				<key>subtext</key>
-				<string></string>
+				<string>foobar</string>
 				<key>title</key>
 				<string>Spin</string>
 				<key>type</key>

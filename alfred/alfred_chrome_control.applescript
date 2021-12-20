@@ -177,8 +177,6 @@ on run argv
             set tabTitle to (title of tabInfo)
             set tabUrl to (url of tabInfo)
 
-            set subtitle to (title of tabInfo)
-            set title to (url of tabInfo)
             set fullDomain to item 1 of my splitText(url of tabInfo, "/")
             set domainParts to my splitText(fullDomain, ".")
 
@@ -198,10 +196,19 @@ on run argv
 				    set end of doesNotHaveIconCache to iconPath
                 end
             end
+            
+            set subtitle to tabTitle
+            set title to tabUrl
+
+            if length of title greater than length of subtitle then
+                set temp to subtitle
+                set subtitle to title
+                set title to temp
+            end
 
 			set output to output & "{\"title\":\"" & title & ¬
 			    "\",\"subtitle\":\"" & subtitle  & ¬
-			 	"\",\"match\":\"" & title  & " " & subtitle & ¬
+			 	"\",\"match\":\"" & tabTitle  & " " & tabUrl & ¬
 			 	"\",\"arg\":[" & (windowId of tabInfo) & "," & (tabIndex of tabInfo) & "]"
             
             if hasIcon then
