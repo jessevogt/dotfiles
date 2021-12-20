@@ -1,0 +1,8 @@
+{
+  "alfredsnippet" : {
+    "snippet" : "mutation metafieldCreate {\n\tmetafieldsSet(metafields:[\n\t\t{\n\t\t      ownerId:\"gid:\/\/shopify\/Product\/6561311358998\"\n\t\t      namespace:\"my_fields\"\n\t\t      key:\"my_key\"\n\t\t      type:\"single_line_text_field\"\n\t\t      value:\"foobar\"\n\t    }\n\t]) {\n\t\tmetafields{\n\t\t\tid\n\t\t\towner {\n\t\t\t        __typename\n\t\t      }\n      \t\t\tnamespace\n\t\t      key\n\t\t      type\n\t\t      value\n  \t\t}\n\t\tuserErrors{\n\t\t      code\n\t\t      message\n\t\t }\n\t}\n}",
+    "uid" : "CFD1D747-4243-44FB-90D4-E4FAFC50F61E",
+    "name" : "Metafield Create",
+    "keyword" : ";;mf"
+  }
+}

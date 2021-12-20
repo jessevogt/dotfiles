@@ -142,9 +142,12 @@ on run argv
 		
 		repeat with i from 1 to tabListLength
             set tabInfo to item i of tabList
-			set output to output & "{\"title\":\"" & (title of tabInfo) & ¬
-			    "\",\"subtitle\":\"" & (url of tabInfo) & ¬
-			 	"\",\"match\":\"" & (title of tabInfo) & " " & (url of tabInfo) & ¬
+            set subtitle to (title of tabInfo)
+            set title to (url of tabInfo)
+
+			set output to output & "{\"title\":\"" & title & ¬
+			    "\",\"subtitle\":\"" & subtitle  & ¬
+			 	"\",\"match\":\"" & title  & " " & subtitle & ¬
 			 	"\",\"arg\":[" & (windowId of tabInfo) & "," & (tabIndex of tabInfo) & "]}"
 
 			if i is not tabListLength then

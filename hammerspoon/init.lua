@@ -94,6 +94,15 @@ function setupMonitors()
     screen_layout[center_bottom:id()] = { N=center_top, S=nil, E=right, W=left }
     screen_layout[left:id()] = { N=nil, S=nil, E=center_top, W=nil }
     screen_layout[right:id()] = { N=nil, S=nil, E=nil, W=center_top }
+  elseif samsung_32 and macbook and lg_27 then
+    local center_top = samsung_32
+    local left = macbook
+    local right = lg_27
+
+    screen_layout[center_top:id()] = { N=nil, S=nil, E=right, W=left }
+    screen_layout[left:id()] = { N=nil, S=nil, E=center_top, W=nil }
+    screen_layout[right:id()] = { N=nil, S=nil, E=nil, W=center_top }
+
   elseif samsung_32 and macbook then
     screen_layout[samsung_32:id()] = { N=nil, S=macbook, E=macbook, W=nil }
     screen_layout[macbook:id()] = { N=samsung_32, S=nil, E=nil, W=samsung_32 }
