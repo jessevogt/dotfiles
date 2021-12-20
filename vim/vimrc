@@ -53,6 +53,11 @@ inoremap <silent> <D-p> <Esc>:FZF<cr>
 nnoremap <silent> <C-p> :FZF<cr>
 inoremap <silent> <C-p> <Esc>:FZF<cr>
 
+nnoremap <silent> <D-B> :Buffer<cr>
+inoremap <silent> <D-B> <Esc>:Buffer<cr>
+nnoremap <silent> <C-B> :Buffer<cr>
+inoremap <silent> <C-B> <Esc>:Buffer<cr>
+
 nnoremap <silent> <Leader>rg :Rg <C-R><C-W><CR>
 
 nnoremap <leader>nn :NERDTreeFocus<CR>

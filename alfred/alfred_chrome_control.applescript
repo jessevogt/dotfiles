@@ -14,6 +14,13 @@ on findAndReplaceInText(theText, theSearchString, theReplacementString)
 	return theText
 end findAndReplaceInText
 
+on splitText(theText, theDelimiter)
+    set AppleScript's text item delimiters to theDelimiter
+    set theTextItems to every text item of theText
+    set AppleScript's text item delimiters to ""
+    return theTextItems
+end splitText
+
 on jsonSafeString(str)
 	return findAndReplaceInText(str, "\"", "\\\"")
 end jsonSafeString
@@ -128,6 +135,27 @@ on findTab(searchTerm)
     end
 end findTab
 
+-- https://stackoverflow.com/questions/3469389/applescript-testing-for-file-existence/3469708
+on FileExists(theFile) -- (String) as Boolean
+    tell application "System Events"
+        if exists file theFile then
+            return true
+        else
+            return false
+        end if
+    end tell
+end FileExists
+
+on iconFilenameOverride(fullDomain, domainParts)
+    if length of domainParts greater than 1 then
+        if item -2 of domainParts is "spin" then
+            return "spin.dev"
+        end 
+    end
+
+    return fullDomain
+end iconFilenameOverride
+
 on run argv
     log(argv)
 	set command to system attribute "alfred_chrome_control_mode"
@@ -139,16 +167,48 @@ on run argv
 		set tabList to listTabs()
 		set tabListLength to length of tabList
 		set output to "{ \"items\": ["
+        set cacheDir to (system attribute "HOME") & "/chrome-tab-icon-cache/"
+
+        set hasIconCache to {}
+        set doesNotHaveIconCache to {}
 		
 		repeat with i from 1 to tabListLength
             set tabInfo to item i of tabList
+            set tabTitle to (title of tabInfo)
+            set tabUrl to (url of tabInfo)
+
             set subtitle to (title of tabInfo)
             set title to (url of tabInfo)
+            set fullDomain to item 1 of my splitText(url of tabInfo, "/")
+            set domainParts to my splitText(fullDomain, ".")
+
+            set iconFilename to my iconFilenameOverride(fullDomain, domainParts)
+            set iconPath to cacheDir & iconFilename
+            set hasIcon to false
+
+            if hasIconCache contains iconPath then
+                set hasIcon to true
+            else if doesNotHaveIconCache contains iconPath then
+                set hasIcon to false
+            else
+                set hasIcon to FileExists(iconPath)
+                if hasIcon then
+				    set end of hasIconCache to iconPath
+                else
+				    set end of doesNotHaveIconCache to iconPath
+                end
+            end
 
 			set output to output & "{\"title\":\"" & title & ¬
 			    "\",\"subtitle\":\"" & subtitle  & ¬
 			 	"\",\"match\":\"" & title  & " " & subtitle & ¬
-			 	"\",\"arg\":[" & (windowId of tabInfo) & "," & (tabIndex of tabInfo) & "]}"
+			 	"\",\"arg\":[" & (windowId of tabInfo) & "," & (tabIndex of tabInfo) & "]"
+            
+            if hasIcon then
+                set output to output & ",\"icon\":{\"path\":\"" & iconPath & "\"}}"
+            else
+                set output to output & "}"
+            end
 
 			if i is not tabListLength then
 				set output to output & ","
