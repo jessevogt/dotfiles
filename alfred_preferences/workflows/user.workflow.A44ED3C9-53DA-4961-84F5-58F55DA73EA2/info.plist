@@ -33,6 +33,41 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>if [[ "$1" = "bash" ]]; then
+	bash -c "${*:2}"
+elif [[ "$1" = "terminal" ]]; then
+	osascript &lt;&lt;EOF
+tell application "Terminal"
+	do script "$2; exit"
+    -- set newWindow to (create window with default profile)
+    -- tell current session of newWindow
+    --     write text "$2; exit"
+    -- end tell
+end tell
+EOF
+fi</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>8D026B3A-87F5-4611-B332-C7ACCEDF5342</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>alfredfiltersresults</key>
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -79,40 +114,6 @@
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>102</integer>
-				<key>script</key>
-				<string>if [[ "$1" = "bash" ]]; then
-	bash -c "${*:2}"
-elif [[ "$1" = "iterm" ]]; then
-	osascript &lt;&lt;EOF
-tell application "iTerm2"
-    set newWindow to (create window with default profile)
-    tell current session of newWindow
-        write text "$2; exit"
-    end tell
-end tell
-EOF
-fi</string>
-				<key>scriptargtype</key>
-				<integer>1</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>8D026B3A-87F5-4611-B332-C7ACCEDF5342</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -121,14 +122,14 @@ fi</string>
 		<key>8D026B3A-87F5-4611-B332-C7ACCEDF5342</key>
 		<dict>
 			<key>xpos</key>
-			<integer>720</integer>
+			<integer>575</integer>
 			<key>ypos</key>
-			<integer>410</integer>
+			<integer>380</integer>
 		</dict>
 		<key>BBF74D18-7545-4222-90C0-DF8D86E9A230</key>
 		<dict>
 			<key>xpos</key>
-			<integer>405</integer>
+			<integer>290</integer>
 			<key>ypos</key>
 			<integer>395</integer>
 		</dict>

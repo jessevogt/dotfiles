@@ -80,20 +80,16 @@ end
 function setupMonitors()
   local samsung_32 = findScreen("U32J59x")
   local macbook = findScreen("Built-in Retina Display")
-  local benq_27 = findScreen("BenQ GW2765")
+  local benq_27 = findScreen("Benq Gw2765")
   local lg_27 = findScreen("LG HDR 4K")
   local screen_layout = {}
 
   if samsung_32 and macbook and benq_27 and lg_27 then
-    local center_top = samsung_32
-    local center_bottom = macbook
-    local left = benq_27
-    local right = lg_27
+    screen_layout[samsung_32:id()] = { N=nil, S=nil, E=lg_27, W=benq_27 }
+    screen_layout[macbook:id()] = { N=lg_27, S=nil, E=samsung_32, W=lg_27 }
+    screen_layout[benq_27:id()] = { N=nil, S=macbook, E=samsung_32, W=lg_27 }
+    screen_layout[lg_27:id()] = { N=nil, S=nil, E=benq_27, W=samsung_32 }
 
-    screen_layout[center_top:id()] = { N=nil, S=center_bottom, E=right, W=left }
-    screen_layout[center_bottom:id()] = { N=center_top, S=nil, E=right, W=left }
-    screen_layout[left:id()] = { N=nil, S=nil, E=center_top, W=nil }
-    screen_layout[right:id()] = { N=nil, S=nil, E=nil, W=center_top }
   elseif samsung_32 and macbook and lg_27 then
     local center_top = samsung_32
     local left = macbook
@@ -460,4 +456,28 @@ function focusTab(urlPart)
 
   chrome:activate()
   hs.timer.doAfter(0.001, function() chrome:allWindows()[output["window"]]:focus() end)
+end
+
+function organize()
+  local benq27 = findScreen("Benq Gw2765")
+
+  local CAL = "📅"
+  local PIN = "📌"
+
+  local layout = {
+    {app="Google Chrome", window="Dashboard", frame={x=-1440.0,y=-1008.0,w=1440.0,h=190.0}, unit={x=0,y=0.000,h=0.073,w=1.0}, height=0.073},
+    {app="Google Chrome", window=CAL, frame={x=-1440.0,y=-817.0,w=1440.0,h=644.0},          unit={x=0,y=0.073,h=0.257,w=1.0}, height=0.257},
+    {app="Google Chrome", window=PIN, frame={x=-1440.0,y=-172.0,w=1440.0,h=836.0},          unit={x=0,y=0.257,h=0.330,w=1.0}, height=0.330},
+    {app="Slack", window=".*", frame={x=-1440.0,y=665.0,w=1440.0,h=861.0},                  unit={x=0,y=0.660,h=0.340,w=1.0}, height=0.340},
+  }
+
+  local accumHeight = 0.0
+  for _, appwin in ipairs(layout) do
+      -- hs.application(appwin["app"]):findWindow(appwin["window"]):setFrame(appwin["frame"])
+      -- hs.application(appwin["app"]):findWindow(appwin["window"]):move({x=0,y=0,w=1.0h=0.5}, benq_27)
+      local win = hs.application(appwin["app"]):findWindow(appwin["window"])
+      win:moveToScreen(benq27)
+      win:moveToUnit({x=0,y=accumHeight,w=1,h=appwin["height"]})
+      accumHeight = accumHeight + appwin["height"]
+  end
 end

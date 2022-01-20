@@ -188,7 +188,7 @@ main()</string>
 		<key>alfred_chrome_control_mode</key>
 		<string>focusTabByUrl</string>
 		<key>alfred_chrome_control_mode_arg</key>
-		<string>mail.google.com</string>
+		<string>mail.google.com focus</string>
 	</dict>
 	<key>version</key>
 	<string></string>

@@ -10,5 +10,9 @@
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "workbench.colorTheme": "GitHub Plus",
   "editor.fontSize": 14,
-  "diffEditor.renderSideBySide": false
+  "diffEditor.renderSideBySide": false,
+  "openInGitHub.defaultBranch": "main",
+  "openInGitHub.repositoryType": "github",
+  "security.workspace.trust.untrustedFiles": "open",
+  "window.zoomLevel": 1
 }
