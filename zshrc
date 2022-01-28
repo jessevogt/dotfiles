@@ -44,6 +44,8 @@ fi
 alias gpf="git push --force-with-lease"
 alias gp="git push"
 
+export EDITOR=vim
+
 setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
