@@ -75,7 +75,7 @@
 				<key>autopaste</key>
 				<true/>
 				<key>clipboardtext</key>
-				<string>@spy github issues create {var:repository} {query}</string>
+				<string>@spy github issues create repo={var:repository} title="{query}"</string>
 				<key>ignoredynamicplaceholders</key>
 				<false/>
 				<key>transient</key>
