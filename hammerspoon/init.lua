@@ -4,8 +4,6 @@ hs.allowAppleScript(true);
 log = hs.logger.new('init','debug')
 log.i('Initializing') -- will print "[mymodule] Initializing" to the console
 
-hs.openConsole()
-
 function readMyEnv()
   local filePath = os.getenv("HOME") .. "/.myenv"
   local f = io.open(filePath, "r")
@@ -36,34 +34,15 @@ end
 
 local moveMouseScreen = nil
 
-function moveMouseToNextScreen()
-    if moveMouseScreen == nil then
-        moveMouseScreen = hs.screen.mainScreen()
-    end
-        
-    moveMouseScreen = moveMouseScreen:next()
-    local r = moveMouseScreen:frame()
-
-    local centerX = r.w / 2
-    local centerY = r.h / 2
-    hs.mouse.setRelativePosition({x=centerX, y=centerY}, moveMouseScreen)
-end
-
-
-
 function preferredScreen()
   return hs.screen.find('BenQ GW2765')
 end
-
-
 
 function baseMove(x, y, w, h)
   return function()
     local win = hs.window.focusedWindow()
     if win == nil then
         return
-
-
     end
 
     win:moveToUnit({x=x, y=y, w=w, h=h}, 0)
@@ -80,20 +59,25 @@ end
 function setupMonitors()
   local samsung_32 = findScreen("U32J59x")
   local macbook = findScreen("Built-in Retina Display")
-  local benq_27 = findScreen("BenQ GW2765")
+  local benq_27 = findScreen("Benq Gw2765")
   local lg_27 = findScreen("LG HDR 4K")
   local screen_layout = {}
 
   if samsung_32 and macbook and benq_27 and lg_27 then
+    screen_layout[samsung_32:id()] = { N=nil, S=nil, E=lg_27, W=benq_27 }
+    screen_layout[macbook:id()] = { N=lg_27, S=nil, E=samsung_32, W=lg_27 }
+    screen_layout[benq_27:id()] = { N=nil, S=macbook, E=samsung_32, W=lg_27 }
+    screen_layout[lg_27:id()] = { N=nil, S=nil, E=benq_27, W=samsung_32 }
+
+  elseif samsung_32 and macbook and lg_27 then
     local center_top = samsung_32
-    local center_bottom = macbook
-    local left = benq_27
+    local left = macbook
     local right = lg_27
 
-    screen_layout[center_top:id()] = { N=nil, S=center_bottom, E=right, W=left }
-    screen_layout[center_bottom:id()] = { N=center_top, S=nil, E=right, W=left }
+    screen_layout[center_top:id()] = { N=nil, S=nil, E=right, W=left }
     screen_layout[left:id()] = { N=nil, S=nil, E=center_top, W=nil }
     screen_layout[right:id()] = { N=nil, S=nil, E=nil, W=center_top }
+
   elseif samsung_32 and macbook then
     screen_layout[samsung_32:id()] = { N=nil, S=macbook, E=macbook, W=nil }
     screen_layout[macbook:id()] = { N=samsung_32, S=nil, E=nil, W=samsung_32 }
@@ -127,37 +111,12 @@ function fullScreen()
   win:maximize(0)
 end
 
-function typeTimestamp()
-  hs.eventtap.keyStroke({'cmd'}, 'b');
-  hs.eventtap.keyStrokes(os.date('%Y-%m-%d (%a) %I:%M %p'))
-  hs.eventtap.keyStroke({'cmd'}, 'b');
-end
-
-function typeDate()
-  hs.eventtap.keyStrokes(os.date('%Y-%m-%d'))
-end
-
 function typeClipboard()
   local s = hs.pasteboard.readString()
   for i = 1, #s do
     local c = s:sub(i, i)
     hs.eventtap.keyStrokes(c)
     hs.timer.usleep(50000)
-  end
-end
-
-function cuSlackMeeting()
-  local win = hs.window.focusedWindow();
-
-  hs.application.launchOrFocus("Slack");
-  hs.eventtap.keyStroke({'cmd'}, '1');
-  hs.eventtap.keyStrokes("/status :calendar: meeting");
-  hs.eventtap.keyStroke({}, "return");
-  hs.eventtap.keyStrokes("/dnd 1 hour");
-  hs.eventtap.keyStroke({}, "return");
-
-  if win ~= nil then
-    win:focus();
   end
 end
 
@@ -199,16 +158,6 @@ function unfocusWindow()
   win:setFrame(windowFocusState.originalFrame)
 end
 
-function googleDocMarkListItemDone()
-  hs.eventtap.keyStroke({'cmd'}, 'right');
-  hs.eventtap.keyStroke({'cmd', 'shift'}, 'left');
-  hs.eventtap.keyStroke({'option'}, '/');
-  hs.eventtap.keyStrokes('text color: dark gray 1');
-  hs.eventtap.keyStroke({}, 'down');
-  hs.eventtap.keyStroke({}, 'return');
-  hs.eventtap.keyStroke({'cmd', 'shift'}, 'X');
-end
-
 function tabSearch()
   if isEnv("shopify_mac") then
     local chrome = hs.application.find("Google Chrome")
@@ -240,8 +189,21 @@ function tabSearch()
   end
 end
 
---local H = hs.hotkey.modal.new({}, 'F20')
---H:bind('', 'l', nil, hs.toggleConsole);
+function collectAllWindows()
+  local targetScreen = hs.mouse.getCurrentScreen()
+  for _, win in ipairs(hs.window.allWindows()) do
+    win:moveToScreen(targetScreen)
+  end
+end
+
+MOUSE_NEXT_SCREEN = hs.fnutils.cycle(hs.screen.allScreens())
+function moveMouseToNextScreen()
+  local screen = MOUSE_NEXT_SCREEN()
+  local r = screen:frame()
+  local centerX = r.w / 2
+  local centerY = r.h / 2
+  hs.mouse.setRelativePosition({x=centerX, y=centerY}, screen)
+end
 
 local HYPER0 = {'ctrl', 'cmd', 'shift', 'alt'};  -- right cmd (mac) | alt (surface)
 local HYPER1 = {'ctrl', 'cmd', 'shift'}; -- right option/alt (mac) | app/menu (surface)
@@ -275,28 +237,12 @@ hs.hotkey.bind(HYPER1, 'w', moveToScreenFactory('N'))
 hs.hotkey.bind(HYPER1, 's', moveToScreenFactory('S'))
 hs.hotkey.bind(HYPER1, 'd', moveToScreenFactory('E'))
 
--- hs.hotkey.bind({'ctrl', 'cmd', 'alt', 'shift'}, 'l', hs.toggleConsole);
 hs.hotkey.bind({'ctrl', 'cmd', 'alt'}, 'V', typeClipboard);
--- hs.hotkey.bind({'cmd', 'shift'}, '-', hs.toggleConsole);
-hs.hotkey.bind(HYPER0, 'M', cuSlackMeeting);
 hs.hotkey.bind(HYPER0, 'F', focusWindow);
 hs.hotkey.bind(HYPER1, 'F', unfocusWindow);
-hs.hotkey.bind(HYPER0, 'L', googleDocMarkListItemDone);
--- hs.hotkey.bind(HYPER0, 'T', typeDate);
 
-hs.hotkey.bind(
-  {'ctrl', 'option'}, 'tab',
-  function()
-    hs.timer.doAfter(
-      0.01,
-      function ()
-        hs.osascript.applescript("tell application \"System Events\" to key code 126 using control down")
-      end
-    )
-  end
-)
-
-hs.hotkey.bind(HYPER1, 'home', moveMouseToNextScreen)
+hs.hotkey.bind(HYPER0, 'y', moveMouseToNextScreen)
+hs.hotkey.bind(HYPER1, 'y', collectAllWindows)
 
 hs.hotkey.bind(HYPER1, '/', foo);
 
@@ -334,7 +280,6 @@ e.2......6.3..........t..q....
 ...x.5c....y.......z..........
 ]]
 
-
 -- caffeine replacement
 local caffeine = hs.menubar.new()
 
@@ -353,102 +298,26 @@ end
 caffeine:setClickCallback(caffeineClicked)
 setCaffeineDisplay(hs.caffeinate.get("displayIdle"))
 
-tpadHereIcon = [[ASCII:
-a==========d
-=..........=
-=.f......i.=
-=..........=
-=.k......l.=
-=..........=
-=..........=
-=..........=
-=..........=
-=..........=
-=..........=
-=.g......h.=
-=..........=
-b==========c
-]]
+function organize()
+  local benq27 = findScreen("Benq Gw2765")
 
-tpadGoneIcon = [[ASCII:
-a==========d
-=..........=
-=.f......i.=
-=..........=
-=.k......l.=
-=..........=
-=...A..B...=
-=..........=
-=..........=
-=...D..C...=
-=..........=
-=.g......h.=
-=..........=
-b==========c
-]]
+  local CAL = "📅"
+  local PIN = "📌"
 
--- local tpadLocation = hs.menubar.new()
+  local layout = {
+    {app="Google Chrome", window="Dashboard", frame={x=-1440.0,y=-1008.0,w=1440.0,h=190.0}, unit={x=0,y=0.000,h=0.073,w=1.0}, height=0.073},
+    {app="Google Chrome", window=CAL, frame={x=-1440.0,y=-817.0,w=1440.0,h=644.0},          unit={x=0,y=0.073,h=0.257,w=1.0}, height=0.257},
+    {app="Google Chrome", window=PIN, frame={x=-1440.0,y=-172.0,w=1440.0,h=836.0},          unit={x=0,y=0.257,h=0.330,w=1.0}, height=0.330},
+    {app="Slack", window=".*", frame={x=-1440.0,y=665.0,w=1440.0,h=861.0},                  unit={x=0,y=0.660,h=0.340,w=1.0}, height=0.340},
+  }
 
-function toggleTPadLocation()
-    cmd = "/usr/local/bin/blueutil "
-    local handle = io.popen(cmd .. "-p")
-    local result = handle:read("*a"):gsub("^%s*(.-)%s*$", "%1")
-    handle:close()
-
-    if result == "0" then
-        os.execute("ssh 192.168.102.6 " .. cmd .. "-p 0")
-        os.execute(cmd .. "-p 1")
-        tpadLocation:setIcon(tpadHereIcon)
-    else
-        os.execute(cmd .. "-p 0")
-        os.execute("ssh 192.168.102.6 " .. cmd .. "-p 1")
-        tpadLocation:setIcon(tpadGoneIcon)
-    end
-end
-
-
--- tpadLocation:setIcon(tpadGoneIcon)
--- tpadLocation:setClickCallback(toggleTPadLocation)
---
---
-
-
-function focusTab(urlPart)
-  success, output, rawOutput = hs.osascript.javascript(string.format([[
-  (() => {
-    const chrome = Application("Google Chrome");
-
-    function findTab(url) {
-    	const windows = chrome.windows();
-    	const windowsLength = windows.length;
-    	
-    	for (let windowIndex = 0; windowIndex < windowsLength; ++windowIndex) {
-    		const window = windows[windowIndex];
-    		const tabs = window.tabs();
-    		const tabsLength = tabs.length;
-    		
-    		for (let tabIndex = 0; tabIndex < tabsLength; ++tabIndex) {
-    			const tab = tabs[tabIndex];
-    			
-    			if (tab.url().includes(url)) {
-    				return { window: window.id(), tab: tabIndex };
-    			}
-    		}
-    	}
-    	
-    	return null;
-    }
-
-    return findTab("%s");
-  })();
-  ]], urlPart))
-
-  log.i(hs.inspect(output))
-
-  chrome = hs.application.find("Google Chrome")
-
-  hs.fnutils.map(chrome:allWindows(), function (w) log.i(w:id(), w:title()) end)
-
-  chrome:activate()
-  hs.timer.doAfter(0.001, function() chrome:allWindows()[output["window"]]:focus() end)
+  local accumHeight = 0.0
+  for _, appwin in ipairs(layout) do
+      -- hs.application(appwin["app"]):findWindow(appwin["window"]):setFrame(appwin["frame"])
+      -- hs.application(appwin["app"]):findWindow(appwin["window"]):move({x=0,y=0,w=1.0h=0.5}, benq_27)
+      local win = hs.application(appwin["app"]):findWindow(appwin["window"])
+      win:moveToScreen(benq27)
+      win:moveToUnit({x=0,y=accumHeight,w=1,h=appwin["height"]})
+      accumHeight = accumHeight + appwin["height"]
+  end
 end

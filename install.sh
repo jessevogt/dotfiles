@@ -69,6 +69,9 @@ if [[ "${SPIN:=NOT_SPIN}" != "NOT_SPIN" ]]; then
 fi
 
 ln -sf $scriptdir/zshrc ~/.zshrc
+ln -sf $scriptdir/zshenv ~/.zshenv
 rm -rf ~/.vim && ln -sf $scriptdir/vim/ ~/.vim
 ln -sf $scriptdir/tmux.conf ~/.tmux.conf
-mkdir -p "$vscode_settings_dir" && ln -sf "$scriptdir/vscode_settings.json" "$vscode_settings_dir/settings.json"
+
+mkdir -p "$vscode_settings_dir" && ln -sf "$scriptdir/vscode/settings.json" "$vscode_settings_dir/settings.json"
+mkdir -p "$vscode_settings_dir" && ln -sf "$scriptdir/vscode/keybindings.json" "$vscode_settings_dir/keybindings.json"

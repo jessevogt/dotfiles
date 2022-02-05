@@ -44,6 +44,9 @@ fi
 alias gpf="git push --force-with-lease"
 alias gp="git push"
 
+export EDITOR=vim
+bindkey -e # still use emacs at prompt even though default editor is vim
+
 setopt SHARE_HISTORY
 setopt EXTENDED_HISTORY
 setopt HIST_FIND_NO_DUPS
