@@ -11,5 +11,6 @@
   "workbench.colorTheme": "GitHub Plus",
   "editor.fontSize": 14,
   "diffEditor.renderSideBySide": false,
-  "window.zoomLevel": 1
+  "window.zoomLevel": 1,
+  "godot_tools.editor_path": "/Applications/Godot_mono.app/Contents/MacOS/Godot"
 }
