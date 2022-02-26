@@ -134,7 +134,7 @@
 				<key>fixedorder</key>
 				<false/>
 				<key>items</key>
-				<string>[{"title":"shopify","arg":"shopify"},{"title":"dev docs","arg":"shopify-dev","subtitle":""},{"title":"web","arg":"web"}]</string>
+				<string>[{"title":"shopify","arg":"shopify"},{"title":"dev docs","arg":"shopify-dev","subtitle":""},{"title":"web","arg":"web"},{"title":"sfr","arg":"storefront-renderer"}]</string>
 				<key>runningsubtext</key>
 				<string></string>
 				<key>subtext</key>

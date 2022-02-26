@@ -105,3 +105,5 @@ if [ -f '/Users/jesse/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users
 if [ -f '/Users/jesse/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jesse/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
 true
+
+[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)

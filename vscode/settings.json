@@ -13,5 +13,7 @@
   "diffEditor.renderSideBySide": false,
   "openInGitHub.defaultBranch": "main",
   "openInGitHub.repositoryType": "github",
-  "security.workspace.trust.untrustedFiles": "open"
+  "security.workspace.trust.untrustedFiles": "open",
+  "terminal.integrated.fontSize": 15,
+  "window.zoomLevel": 2
 }

@@ -303,21 +303,34 @@ function organize()
 
   local CAL = "📅"
   local PIN = "📌"
+  local DBRD = "Dashboard"
 
   local layout = {
-    {app="Google Chrome", window="Dashboard", frame={x=-1440.0,y=-1008.0,w=1440.0,h=190.0}, unit={x=0,y=0.000,h=0.073,w=1.0}, height=0.073},
-    {app="Google Chrome", window=CAL, frame={x=-1440.0,y=-817.0,w=1440.0,h=644.0},          unit={x=0,y=0.073,h=0.257,w=1.0}, height=0.257},
-    {app="Google Chrome", window=PIN, frame={x=-1440.0,y=-172.0,w=1440.0,h=836.0},          unit={x=0,y=0.257,h=0.330,w=1.0}, height=0.330},
-    {app="Slack", window=".*", frame={x=-1440.0,y=665.0,w=1440.0,h=861.0},                  unit={x=0,y=0.660,h=0.340,w=1.0}, height=0.340},
+    {app="Google Chrome", window=DBRD, height=0.027, actualHeight=0.081},
+    {app="Google Chrome", window=CAL,  height=0.257, sendToBack=true},
+    {app="Google Chrome", window=PIN,  height=0.330},
+    {app="Slack",         window=".*", height=0.386},
   }
 
   local accumHeight = 0.0
   for _, appwin in ipairs(layout) do
-      -- hs.application(appwin["app"]):findWindow(appwin["window"]):setFrame(appwin["frame"])
-      -- hs.application(appwin["app"]):findWindow(appwin["window"]):move({x=0,y=0,w=1.0h=0.5}, benq_27)
       local win = hs.application(appwin["app"]):findWindow(appwin["window"])
       win:moveToScreen(benq27)
-      win:moveToUnit({x=0,y=accumHeight,w=1,h=appwin["height"]})
+      win:moveToUnit({
+        x=0,
+        y=accumHeight,
+        w=1,
+        h=appwin["actualHeight"] or appwin["height"]
+      })
       accumHeight = accumHeight + appwin["height"]
+  end
+  
+  for _, appwin in ipairs(layout) do
+      local win = hs.application(appwin["app"]):findWindow(appwin["window"])
+      log.i(appwin["window"])
+      if appwin["sendToBack"] then
+        log.i(appwin["window"])
+        win:sendToBack()
+      end
   end
 end
