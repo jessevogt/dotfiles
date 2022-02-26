@@ -1,4 +1,5 @@
 {
+  "diffEditor.renderSideBySide": false,
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorStyle": "line",
   "editor.guides.bracketPairs": true,
@@ -7,13 +8,12 @@
   "editor.rulers": [120],
   "editor.tabSize": 2,
   "files.autoSave": "afterDelay",
-  "window.title": "${activeEditorMedium}${separator}${rootName}",
-  "workbench.colorTheme": "GitHub Plus",
-  "editor.fontSize": 14,
-  "diffEditor.renderSideBySide": false,
+  "godot_tools.editor_path": "/Applications/Godot_mono.app/Contents/MacOS/Godot",
   "openInGitHub.defaultBranch": "main",
   "openInGitHub.repositoryType": "github",
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.fontSize": 15,
-  "window.zoomLevel": 2
+  "window.title": "${activeEditorMedium}${separator}${rootName}",
+  "window.zoomLevel": 1,
+  "workbench.colorTheme": "GitHub Plus"
 }
