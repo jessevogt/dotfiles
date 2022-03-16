@@ -306,7 +306,7 @@ function organize()
   local DBRD = "Dashboard"
 
   local layout = {
-    {app="Google Chrome", window=DBRD, height=0.027, actualHeight=0.081},
+    {app="Google Chrome", window=DBRD, height=0.027, actualHeight=0.088},
     {app="Google Chrome", window=CAL,  height=0.257, sendToBack=true},
     {app="Google Chrome", window=PIN,  height=0.330},
     {app="Slack",         window=".*", height=0.386},

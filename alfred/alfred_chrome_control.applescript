@@ -144,12 +144,16 @@ on FileExists(theFile) -- (String) as Boolean
 	end tell
 end FileExists
 
-on iconFilenameOverride(fullDomain, domainParts)
+on iconFilenameOverride(fullDomain, domainParts, fullUrl)
 	if length of domainParts is greater than 1 then
 		if item -2 of domainParts is "spin" then
 			return "spin.dev"
 		else if item -2 of domainParts is "github" then
 			return "github.com"
+		else if fullUrl contains "docs.google.com/spreadsheets/" then
+			return "sheets.google.com"
+		else if fullUrl contains "docs.google.com/presentation/" then
+			return "presentations.google.com"
 		end if
 	end if
 	
@@ -184,7 +188,7 @@ on run argv
 			set fullDomain to item 1 of my splitText(URL of tabInfo, "/")
 			set domainParts to my splitText(fullDomain, ".")
 			
-			set iconFilename to my iconFilenameOverride(fullDomain, domainParts)
+			set iconFilename to my iconFilenameOverride(fullDomain, domainParts, URL of tabInfo)
 			set iconPath to cacheDir & iconFilename
 			set hasIcon to false
 			
