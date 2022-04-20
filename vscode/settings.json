@@ -16,6 +16,5 @@
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.fontSize": 15,
   "window.title": "${activeEditorMedium}${separator}${rootName}",
-  "window.zoomLevel": 1,
   "workbench.colorTheme": "GitHub Plus"
 }

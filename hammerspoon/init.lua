@@ -197,7 +197,15 @@ function collectAllWindows()
 end
 
 MOUSE_NEXT_SCREEN = hs.fnutils.cycle(hs.screen.allScreens())
+MOUSE_NEXT_SCREEN_SET_TS = hs.timer.secondsSinceEpoch()
+
 function moveMouseToNextScreen()
+  local now = hs.timer.secondsSinceEpoch()
+  if now - MOUSE_NEXT_SCREEN_SET_TS > 60 then
+    MOUSE_NEXT_SCREEN = hs.fnutils.cycle(hs.screen.allScreens())
+    MOUSE_NEXT_SCREEN_SET_TS = now
+  end
+
   local screen = MOUSE_NEXT_SCREEN()
   local r = screen:frame()
   local centerX = r.w / 2
