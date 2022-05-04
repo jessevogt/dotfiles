@@ -12,7 +12,7 @@
   "openInGitHub.defaultBranch": "main",
   "openInGitHub.repositoryType": "github",
   "security.workspace.trust.untrustedFiles": "open",
-  "terminal.integrated.fontSize": 15,
+  "terminal.integrated.fontSize": 13,
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "workbench.colorTheme": "GitHub Plus",
   "github.copilot.enable": {
@@ -21,5 +21,9 @@
     "plaintext": false,
     "markdown": false
   },
-  "editor.inlineSuggest.enabled": true
+  "editor.inlineSuggest.enabled": true,
+  "terminal.integrated.env.windows": {
+  
+  },
+  "window.zoomLevel": 2
 }

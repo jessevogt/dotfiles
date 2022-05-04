@@ -154,6 +154,8 @@ on iconFilenameOverride(fullDomain, domainParts, fullUrl)
 			return "sheets.google.com"
 		else if fullUrl contains "docs.google.com/presentation/" then
 			return "presentations.google.com"
+		else if fullUrl contains "docs.google.com/drawings/" then
+			return "drawing.google.com"
 		end if
 	end if
 	
