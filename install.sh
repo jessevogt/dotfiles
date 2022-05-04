@@ -8,6 +8,11 @@ function setup_symlink_dir {
     local source="$1"
     local dest="$2"
 
+    if [ ! -d $source ]; then
+        echo "$source does not exist!"
+        exit 1
+    fi
+
     mkdir -p "$dest"/..
     rm -rf "$dest"
     ln -Ffsh "$source" "$dest"
@@ -56,6 +61,7 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
     mac_install "fzf"
 
     setup_symlink_dir "$scriptdir/hammerspoon" ~/.hammerspoon
+    setup_symlink_dir "$scriptdir/alfred_preferences" "$HOME/Library/Application Support/Alfred/Alfred.alfredpreferences"
 
     $scriptdir/karabiner/generate_karabiner_json.py $scriptdir/karabiner/karabiner.json
     setup_symlink_dir $scriptdir/karabiner ~/.config/karabiner
