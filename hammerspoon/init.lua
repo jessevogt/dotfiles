@@ -306,6 +306,26 @@ end
 caffeine:setClickCallback(caffeineClicked)
 setCaffeineDisplay(hs.caffeinate.get("displayIdle"))
 
+function tileVertically()
+  local screen = hs.mouse.getCurrentScreen()
+  local windowIndex = 1
+  local wins = {}
+  for _, win in ipairs(hs.window.allWindows()) do
+    if win:screen() == screen then
+      wins[windowIndex] = win
+      windowIndex = windowIndex + 1
+    end
+  end
+
+  local frame = screen:frame()
+  local windowUnitHeight = 1.0 / (windowIndex - 1)
+  local y = 0.0
+  for i = 1, windowIndex - 1 do
+    wins[i]:moveToUnit({x=0, y=y, h=windowUnitHeight, w=1}, 0)
+    y = windowUnitHeight + y
+  end
+end
+
 function organize()
   local benq27 = findScreen("Benq Gw2765")
 

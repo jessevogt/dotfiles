@@ -16,7 +16,7 @@
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.fontSize": 13,
   "window.title": "${activeEditorMedium}${separator}${rootName}",
-  "workbench.colorTheme": "GitHub Plus",
+  "workbench.colorTheme": "Default Light+",
   "github.copilot.enable": {
     "*": true,
     "yaml": true,
@@ -25,7 +25,24 @@
   },
   "editor.inlineSuggest.enabled": true,
   "terminal.integrated.env.windows": {
-  
+
   },
-  "window.zoomLevel": 2
+  "window.zoomLevel": 1,
+  "ruby.useLanguageServer": false,
+  "ruby.lint": {
+    "rubocop": false
+  },
+  "ruby.codeCompletion": false,
+  "ruby.intellisense": false,
+  "ruby.format": false,
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.rubocop-lsp",
+    "editor.formatOnSave": true
+  },
+  "byesig.fold": false,
+  "byesig.enabled": true,
+  "byesig.opacity": 0.5,
+  "byesig.showIcon": false,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true
 }
