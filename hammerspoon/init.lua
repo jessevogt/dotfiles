@@ -213,49 +213,6 @@ function moveMouseToNextScreen()
   hs.mouse.setRelativePosition({x=centerX, y=centerY}, screen)
 end
 
-local HYPER0 = {'ctrl', 'cmd', 'shift', 'alt'};  -- right cmd (mac) | alt (surface)
-local HYPER1 = {'ctrl', 'cmd', 'shift'}; -- right option/alt (mac) | app/menu (surface)
-
---                                      x     y     w     h
-hs.hotkey.bind(HYPER0, 'a', baseMove(0.00, 0.00, 0.50, 1.00))  -- split left
-hs.hotkey.bind(HYPER0, 'w', baseMove(0.00, 0.00, 1.00, 0.50))  -- split top
-hs.hotkey.bind(HYPER0, 's', baseMove(0.00, 0.50, 1.00, 0.50))  -- split bottom
-hs.hotkey.bind(HYPER0, 'd', baseMove(0.50, 0.00, 0.50, 1.00))  -- split right
-
-hs.hotkey.bind(HYPER0, '1', baseMove(0.00, 0.00, 1.00, 0.33)) -- top third
-hs.hotkey.bind(HYPER0, '2', baseMove(0.00, 0.33, 1.00, 0.33)) -- middle third
-hs.hotkey.bind(HYPER0, '3', baseMove(0.00, 0.66, 1.00, 0.34)) -- bottom third
-
-hs.hotkey.bind(HYPER0, hs.keycodes.map["pad1"], baseMove(0.00, 0.00, 1.00, 0.25)) -- first fourth
-hs.hotkey.bind(HYPER0, hs.keycodes.map["pad2"], baseMove(0.00, 0.25, 1.00, 0.25)) -- second fourth
-
-hs.hotkey.bind(HYPER1, '1', baseMove(0.00, 0.00, 0.33, 1.00)) -- top third
-hs.hotkey.bind(HYPER1, '2', baseMove(0.33, 0.00, 0.33, 1.00)) -- middle third
-hs.hotkey.bind(HYPER1, '3', baseMove(0.66, 0.00, 0.34, 1.00)) -- bottom third
-
-hs.hotkey.bind(HYPER0, 'q', baseMove(0.00, 0.00, 0.50, 0.50))  -- top left
-hs.hotkey.bind(HYPER0, 'e', baseMove(0.50, 0.00, 0.50, 0.50))  -- top right
-hs.hotkey.bind(HYPER0, 'c', baseMove(0.50, 0.50, 0.50, 0.50))  -- bottom right
-hs.hotkey.bind(HYPER0, 'z', baseMove(0.00, 0.50, 0.50, 0.50))  -- bottom left
-
-hs.hotkey.bind(HYPER0, 'x', fullScreen)
-
-hs.hotkey.bind(HYPER1, 'a', moveToScreenFactory('W'))
-hs.hotkey.bind(HYPER1, 'w', moveToScreenFactory('N'))
-hs.hotkey.bind(HYPER1, 's', moveToScreenFactory('S'))
-hs.hotkey.bind(HYPER1, 'd', moveToScreenFactory('E'))
-
-hs.hotkey.bind({'ctrl', 'cmd', 'alt'}, 'V', typeClipboard);
-hs.hotkey.bind(HYPER0, 'F', focusWindow);
-hs.hotkey.bind(HYPER1, 'F', unfocusWindow);
-
-hs.hotkey.bind(HYPER0, 'y', moveMouseToNextScreen)
-hs.hotkey.bind(HYPER1, 'y', collectAllWindows)
-
-hs.hotkey.bind(HYPER1, '/', foo);
-
-hs.hotkey.bind({'option'}, 't', tabSearch)
-
 ampOnIcon = [[ASCII:
 .....1a..........AC..........E
 ..............................
@@ -342,7 +299,9 @@ function organize()
 
   local accumHeight = 0.0
   for _, appwin in ipairs(layout) do
+      log.i(appwin["window"])
       local win = hs.application(appwin["app"]):findWindow(appwin["window"])
+      log.i(win)
       win:moveToScreen(benq27)
       win:moveToUnit({
         x=0,
@@ -354,11 +313,56 @@ function organize()
   end
   
   for _, appwin in ipairs(layout) do
-      local win = hs.application(appwin["app"]):findWindow(appwin["window"])
       log.i(appwin["window"])
+      local win = hs.application(appwin["app"]):findWindow(appwin["window"])
       if appwin["sendToBack"] then
         log.i(appwin["window"])
         win:sendToBack()
       end
   end
 end
+
+local HYPER0 = {'ctrl', 'cmd', 'shift', 'alt'};  -- right cmd (mac) | alt (surface)
+local HYPER1 = {'ctrl', 'cmd', 'shift'}; -- right option/alt (mac) | app/menu (surface)
+
+--                                      x     y     w     h
+hs.hotkey.bind(HYPER0, 'a', baseMove(0.00, 0.00, 0.50, 1.00))  -- split left
+hs.hotkey.bind(HYPER0, 'w', baseMove(0.00, 0.00, 1.00, 0.50))  -- split top
+hs.hotkey.bind(HYPER0, 's', baseMove(0.00, 0.50, 1.00, 0.50))  -- split bottom
+hs.hotkey.bind(HYPER0, 'd', baseMove(0.50, 0.00, 0.50, 1.00))  -- split right
+
+hs.hotkey.bind(HYPER0, '1', baseMove(0.00, 0.00, 1.00, 0.33)) -- top third
+hs.hotkey.bind(HYPER0, '2', baseMove(0.00, 0.33, 1.00, 0.33)) -- middle third
+hs.hotkey.bind(HYPER0, '3', baseMove(0.00, 0.66, 1.00, 0.34)) -- bottom third
+
+hs.hotkey.bind(HYPER0, hs.keycodes.map["pad1"], baseMove(0.00, 0.00, 1.00, 0.25)) -- first fourth
+hs.hotkey.bind(HYPER0, hs.keycodes.map["pad2"], baseMove(0.00, 0.25, 1.00, 0.25)) -- second fourth
+
+hs.hotkey.bind(HYPER1, '1', baseMove(0.00, 0.00, 0.33, 1.00)) -- top third
+hs.hotkey.bind(HYPER1, '2', baseMove(0.33, 0.00, 0.33, 1.00)) -- middle third
+hs.hotkey.bind(HYPER1, '3', baseMove(0.66, 0.00, 0.34, 1.00)) -- bottom third
+
+hs.hotkey.bind(HYPER0, 'q', baseMove(0.00, 0.00, 0.50, 0.50))  -- top left
+hs.hotkey.bind(HYPER0, 'e', baseMove(0.50, 0.00, 0.50, 0.50))  -- top right
+hs.hotkey.bind(HYPER0, 'c', baseMove(0.50, 0.50, 0.50, 0.50))  -- bottom right
+hs.hotkey.bind(HYPER0, 'z', baseMove(0.00, 0.50, 0.50, 0.50))  -- bottom left
+
+hs.hotkey.bind(HYPER0, 'x', fullScreen)
+
+hs.hotkey.bind(HYPER1, 'a', moveToScreenFactory('W'))
+hs.hotkey.bind(HYPER1, 'w', moveToScreenFactory('N'))
+hs.hotkey.bind(HYPER1, 's', moveToScreenFactory('S'))
+hs.hotkey.bind(HYPER1, 'd', moveToScreenFactory('E'))
+
+hs.hotkey.bind({'ctrl', 'cmd', 'alt'}, 'V', typeClipboard);
+hs.hotkey.bind(HYPER0, 'F', focusWindow);
+hs.hotkey.bind(HYPER1, 'F', unfocusWindow);
+
+hs.hotkey.bind(HYPER0, 'y', moveMouseToNextScreen)
+hs.hotkey.bind(HYPER1, 'y', collectAllWindows)
+
+hs.hotkey.bind(HYPER0, 'u', tileVertically)
+
+hs.hotkey.bind(HYPER1, '/', foo);
+
+hs.hotkey.bind({'option'}, 't', tabSearch)
