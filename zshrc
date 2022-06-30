@@ -43,6 +43,7 @@ fi
 
 alias gpf="git push --force-with-lease"
 alias gp="git push"
+alias greset='git reset --hard origin/$(git name-rev --name-only HEAD)'
 alias killrails="pkill -fi -9 rails"
 
 export EDITOR=vim
