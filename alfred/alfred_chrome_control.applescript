@@ -216,10 +216,7 @@ on run argv
 				set title to temp
 			end if
 			
-			set output to output & "{\"title\":\"" & title & Â
-				"\",\"subtitle\":\"" & subtitle & Â
-				"\",\"match\":\"" & tabTitle & " " & my findAndReplaceInText(tabUrl, "/", " ") & Â
-				"\",\"arg\":[" & (windowId of tabInfo) & "," & (tabIndex of tabInfo) & "]"
+			set output to output & "{\"title\":\"" & title & "\",\"subtitle\":\"" & subtitle & "\",\"match\":\"" & tabTitle & " " & my findAndReplaceInText(tabUrl, "/", " ") & "\",\"arg\":[" & (windowId of tabInfo) & "," & (tabIndex of tabInfo) & "]"
 			
 			if hasIcon then
 				set output to output & ",\"icon\":{\"path\":\"" & iconPath & "\"}}"

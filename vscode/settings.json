@@ -46,6 +46,5 @@
   "workbench.colorTheme": "Default Light+",
   "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
   "editor.fontSize": 13,
-  "diffEditor.renderSideBySide": false,
-  "window.zoomLevel": 1
+  "diffEditor.renderSideBySide": false
 }
