@@ -33,6 +33,25 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>applescript</key>
+				<string>on alfred_script(q)
+	tell application "Hammerspoon"
+		execute lua code "organize()"
+	end tell
+end alfred_script</string>
+				<key>cachescript</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.applescript</string>
+			<key>uid</key>
+			<string>B14DDE95-F5D2-4972-B75E-6D618672F04C</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
@@ -51,25 +70,6 @@
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>applescript</key>
-				<string>on alfred_script(q)
-	tell application "Hammerspoon"
-		execute lua code "organize()"
-	end tell
-end alfred_script</string>
-				<key>cachescript</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.applescript</string>
-			<key>uid</key>
-			<string>B14DDE95-F5D2-4972-B75E-6D618672F04C</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -80,7 +80,7 @@ end alfred_script</string>
 			<key>xpos</key>
 			<integer>355</integer>
 			<key>ypos</key>
-			<integer>230</integer>
+			<integer>250</integer>
 		</dict>
 		<key>B14DDE95-F5D2-4972-B75E-6D618672F04C</key>
 		<dict>

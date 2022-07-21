@@ -185,7 +185,7 @@ on run argv
 		repeat with i from 1 to tabListLength
 			set tabInfo to item i of tabList
 			set tabTitle to (title of tabInfo)
-			set tabUrl to (URL of tabInfo)
+			set tabUrl to findAndReplaceInText(URL of tabInfo, "www.", "")
 			
 			set fullDomain to item 1 of my splitText(URL of tabInfo, "/")
 			set domainParts to my splitText(fullDomain, ".")
