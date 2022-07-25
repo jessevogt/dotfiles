@@ -177,7 +177,7 @@ on run argv
 		set tabList to listTabs()
 		set tabListLength to length of tabList
 		set output to "{ \"items\": ["
-		set cacheDir to (system attribute "HOME") & "/chrome-tab-icon-cache/"
+		set cacheDir to (system attribute "HOME") & "/dotfiles-private/alfred/chrome-tab-icon-cache/"
 		
 		set hasIconCache to {}
 		set doesNotHaveIconCache to {}
