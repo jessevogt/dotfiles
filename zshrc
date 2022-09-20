@@ -9,21 +9,25 @@ zstyle ':vcs_info:*' stagedstr '+'
 zstyle ':vcs_info:git:*' formats '%F{200}[%b%u%c]%f'
 zstyle ':vcs_info:*' enable git
 
-setopt PROMPT_SUBST
-
-case $(hostname) in
-    carrot*|jesse-sh-*|circleup*)
-        host_prompt=''
-        ;;
-    spin)
-        host_prompt=" $(cat /etc/spin/machine/fqdn | cut -d"." -f1) 🌪 "
-        ;;
-    *)
-        host_prompt=' %m'
-        ;;
-esac
-
-export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt' %B%~%b ${vcs_info_msg_0_} $ '
+if [ -f /etc/zsh/zshrc.default.inc.zsh ]; then
+    source /etc/zsh/zshrc.default.inc.zsh
+else
+    setopt PROMPT_SUBST
+    
+    case $(hostname) in
+        carrot*|jesse-sh-*|circleup*)
+            host_prompt=''
+            ;;
+        spin)
+            host_prompt=" $(cat /etc/spin/machine/fqdn | cut -d"." -f1) 🌪 "
+            ;;
+        *)
+            host_prompt=' %m'
+            ;;
+    esac
+    
+    export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt' %B%~%b ${vcs_info_msg_0_} $ '
+fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     alias ls="ls -G"

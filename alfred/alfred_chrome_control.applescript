@@ -37,6 +37,10 @@ on listTabs()
 	set tabInfo to {}
 	tell application "Google Chrome"
 		
+		tell application "System Events" to tell process "Google Chrome"
+			set processWindowTitles to item 1 of {title} of windows
+		end tell
+		
 		set windowIds to item 1 of {id} of windows
 		set windowCount to length of windowIds
 		
@@ -46,6 +50,10 @@ on listTabs()
 		
 		repeat with windowIndex from 1 to windowCount
 			set windowId to item windowIndex of windowIds
+			set aWindow to item windowIndex of windows
+			
+			set groupExtractItems to my splitText(item windowIndex of processWindowTitles, " - Part of group ")
+			set hasGroup to length of groupExtractItems > 1
 			
 			set tabTitles to item windowIndex of allTabTitles
 			set tabUrls to item windowIndex of allTabUrls
@@ -53,6 +61,9 @@ on listTabs()
 			
 			repeat with tabIndex from 1 to tabCount
 				set aTitle to my jsonSafeString(item tabIndex of tabTitles)
+				if hasGroup then
+					set aTitle to (item 1 of my splitText(item 2 of groupExtractItems, " - ")) & ": " & aTitle
+				end if
 				set aUrl to my cleanUrl(item tabIndex of tabUrls)
 				set end of tabInfo to my makeTabInfoRecord(aUrl, aTitle, windowId, tabIndex)
 			end repeat
@@ -88,16 +99,13 @@ on raiseTabByWindowIdAndTabIndex(windowId, tabIndex, mainFocus)
 		set active tab index of aWindow to tabIndex
 		
 		set searchTitle to (title of aWindow as string)
-		log ("SEARCHING FOR " & searchTitle)
 		
 		tell application "System Events" to tell process "Google Chrome"
 			set windowTitles to item 1 of {title} of windows
 			set windowTitleCount to length of windowTitles
 			repeat with windowIndex from 1 to windowTitleCount
 				set windowTitle to item windowIndex of windowTitles
-				log (windowTitle)
 				if (offset of searchTitle in windowTitle) is greater than 0 then
-					log ("FOUND")
 					set pWindow to item windowIndex of windows
 					perform action "AXRaise" of pWindow
 					
@@ -125,7 +133,6 @@ on findTab(searchTerm, focus)
 	set tabInfosCount to length of tabInfos
 	repeat with tabInfoIndex from 1 to tabInfosCount
 		set tabInfo to item tabInfoIndex of tabInfos
-		log (URL of tabInfo)
 		if (offset of searchTerm in (URL of tabInfo)) is greater than 0 then
 			raiseTabByWindowIdAndTabIndex(windowId of tabInfo, tabIndex of tabInfo, focus)
 			return

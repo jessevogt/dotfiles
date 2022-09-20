@@ -8,7 +8,12 @@
   "editor.rulers": [120],
   "editor.tabSize": 2,
   "files.autoSave": "afterDelay",
-  "github.copilot.enable": { "*": true, "yaml": true, "plaintext": false, "markdown": false },
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": false
+  },
   "godot_tools.editor_path": "/Applications/Godot_mono.app/Contents/MacOS/Godot",
   "openInGitHub.defaultBranch": "main",
   "openInGitHub.repositoryType": "github",
@@ -22,9 +27,7 @@
     "markdown": false
   },
   "editor.inlineSuggest.enabled": true,
-  "terminal.integrated.env.windows": {
-
-  },
+  "terminal.integrated.env.windows": {},
   "ruby.useLanguageServer": false,
   "ruby.lint": {
     "rubocop": false
@@ -45,5 +48,6 @@
   "terminal.integrated.localEchoEnabled": "off",
   "workbench.colorTheme": "Default Light+",
   "editor.fontSize": 14,
-  "diffEditor.renderSideBySide": false
+  "diffEditor.renderSideBySide": false,
+  "window.zoomLevel": 1
 }

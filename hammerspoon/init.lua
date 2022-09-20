@@ -286,7 +286,7 @@ end
 function organize()
   local benq27 = findScreen("Benq Gw2765")
 
-  local CAL = "📅"
+  local CAL = "Shopify.*Calendar"
   local PIN = "📌"
   local DBRD = "Dashboard"
 
@@ -301,14 +301,16 @@ function organize()
   for _, appwin in ipairs(layout) do
       log.i(appwin["window"])
       local win = hs.application(appwin["app"]):findWindow(appwin["window"])
-      log.i(win)
-      win:moveToScreen(benq27)
-      win:moveToUnit({
-        x=0,
-        y=accumHeight,
-        w=1,
-        h=appwin["actualHeight"] or appwin["height"]
-      })
+
+      if win ~= nil then
+        win:moveToScreen(benq27)
+        win:moveToUnit({
+          x=0,
+          y=accumHeight,
+          w=1,
+          h=appwin["actualHeight"] or appwin["height"]
+        })
+      end
       accumHeight = accumHeight + appwin["height"]
   end
   

@@ -134,7 +134,9 @@
 				<key>fixedorder</key>
 				<false/>
 				<key>items</key>
-				<string>[{"title":"shopify","arg":"shopify"},{"title":"dev docs","arg":"shopify-dev","subtitle":""},{"title":"web","arg":"web"},{"title":"sfr","arg":"storefront-renderer"}]</string>
+				<string>[{"title":"metafields","arg":"metafield-issues"},{"title":"shopify","arg":"shopify"},{"title":"dev docs","arg":"shopify-dev","subtitle":""},{"title":"web","arg":"web"},{"title":"sfr","arg":"storefront-renderer"}]</string>
+				<key>matchmode</key>
+				<integer>0</integer>
 				<key>runningsubtext</key>
 				<string></string>
 				<key>subtext</key>
@@ -179,39 +181,41 @@
 		<key>8CBC58F9-6ECC-49AE-847D-FCCDB74C665B</key>
 		<dict>
 			<key>xpos</key>
-			<integer>745</integer>
+			<real>745</real>
 			<key>ypos</key>
-			<integer>140</integer>
+			<real>140</real>
 		</dict>
 		<key>A468EB70-B65C-4F35-9BE5-DE39157AC6C6</key>
 		<dict>
 			<key>xpos</key>
-			<integer>50</integer>
+			<real>50</real>
 			<key>ypos</key>
-			<integer>140</integer>
+			<real>140</real>
 		</dict>
 		<key>D905158B-51C3-409B-8EA7-87EFCC65D8BD</key>
 		<dict>
 			<key>xpos</key>
-			<integer>535</integer>
+			<real>535</real>
 			<key>ypos</key>
-			<integer>140</integer>
+			<real>140</real>
 		</dict>
 		<key>EA8ABFB0-891A-447B-A3F5-A44835BBD48B</key>
 		<dict>
 			<key>xpos</key>
-			<integer>430</integer>
+			<real>430</real>
 			<key>ypos</key>
-			<integer>170</integer>
+			<real>170</real>
 		</dict>
 		<key>EBE40350-5ACE-4FFB-BECC-78CC65D7407C</key>
 		<dict>
 			<key>xpos</key>
-			<integer>240</integer>
+			<real>240</real>
 			<key>ypos</key>
-			<integer>140</integer>
+			<real>140</real>
 		</dict>
 	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
 	<key>webaddress</key>
 	<string></string>
 </dict>
