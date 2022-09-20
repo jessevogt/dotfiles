@@ -5,4 +5,7 @@ function update_path {
 }
 
 update_path "/opt/homebrew/bin"
-. "$HOME/.cargo/env"
+
+if [ -f "$HOME/.cargo/env" ]; then
+    . "$HOME/.cargo/env"
+fi
