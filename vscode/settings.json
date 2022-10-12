@@ -18,7 +18,7 @@
   "openInGitHub.defaultBranch": "main",
   "openInGitHub.repositoryType": "github",
   "security.workspace.trust.untrustedFiles": "open",
-  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.fontSize": 14,
   "window.title": "${activeEditorMedium}${separator}${rootName}",
   "github.copilot.enable": {
     "*": true,
@@ -48,6 +48,6 @@
   "terminal.integrated.localEchoEnabled": "off",
   "workbench.colorTheme": "Default Light+",
   "editor.fontSize": 14,
-  "diffEditor.renderSideBySide": false,
-  "window.zoomLevel": 1
+  "terminal.integrated.scrollback": 10000,
+  "window.zoomLevel": 2
 }

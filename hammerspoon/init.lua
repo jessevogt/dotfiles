@@ -291,15 +291,15 @@ function organize()
   local DBRD = "Dashboard"
 
   local layout = {
-    {app="Google Chrome", window=DBRD, height=0.027, actualHeight=0.088},
-    {app="Google Chrome", window=CAL,  height=0.257, sendToBack=true},
+--    {app="Google Chrome", window=DBRD, height=0.027, actualHeight=0.088},
+    {app="Google Chrome", window=CAL,  height=0.257},
     {app="Google Chrome", window=PIN,  height=0.330},
-    {app="Slack",         window=".*", height=0.386},
+    {app="Slack",         window=".*"} -- , height=0.386},
   }
 
   local accumHeight = 0.0
-  for _, appwin in ipairs(layout) do
-      log.i(appwin["window"])
+  for idx, appwin in ipairs(layout) do
+      -- log.i(appwin["window"])
       local win = hs.application(appwin["app"]):findWindow(appwin["window"])
 
       if win ~= nil then
@@ -308,20 +308,23 @@ function organize()
           x=0,
           y=accumHeight,
           w=1,
-          h=appwin["actualHeight"] or appwin["height"]
+          h=appwin["actualHeight"] or appwin["height"] or (1.0 - accumHeight)
         })
       end
       accumHeight = accumHeight + appwin["height"]
   end
-  
-  for _, appwin in ipairs(layout) do
-      log.i(appwin["window"])
-      local win = hs.application(appwin["app"]):findWindow(appwin["window"])
-      if appwin["sendToBack"] then
-        log.i(appwin["window"])
-        win:sendToBack()
-      end
-  end
+ 
+  -- for _, appwin in ipairs(layout) do
+  --     log.i(appwin["window"])
+  --     local win = hs.application(appwin["app"]):findWindow(appwin["window"])
+  --     if appwin["sendToBack"] then
+  --       log.i(appwin["window"])
+  --       win:sendToBack()
+  --     end
+  -- end
+end
+
+function launchMacVimWithClipboardContents()
 end
 
 local HYPER0 = {'ctrl', 'cmd', 'shift', 'alt'};  -- right cmd (mac) | alt (surface)
