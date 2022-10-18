@@ -33,27 +33,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
-				<key>keyword</key>
-				<string>vimclip</string>
-				<key>subtext</key>
-				<string></string>
-				<key>text</key>
-				<string>Launch MacVim with Clipboard Contents</string>
-				<key>withspace</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.keyword</string>
-			<key>uid</key>
-			<string>461F9AED-A7DC-438A-8F6F-E4877A22BC59</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>concurrently</key>
 				<true/>
 				<key>escaping</key>
@@ -74,6 +53,27 @@
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>vic</string>
+				<key>subtext</key>
+				<string></string>
+				<key>text</key>
+				<string>Launch MacVim with Clipboard Contents</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>461F9AED-A7DC-438A-8F6F-E4877A22BC59</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -82,16 +82,16 @@
 		<key>461F9AED-A7DC-438A-8F6F-E4877A22BC59</key>
 		<dict>
 			<key>xpos</key>
-			<real>120</real>
+			<real>240</real>
 			<key>ypos</key>
-			<real>70</real>
+			<real>60</real>
 		</dict>
 		<key>9279AEB6-B00B-44AC-8D6A-A62D45F95DF5</key>
 		<dict>
 			<key>xpos</key>
-			<real>475</real>
+			<real>485</real>
 			<key>ypos</key>
-			<real>400</real>
+			<real>60</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

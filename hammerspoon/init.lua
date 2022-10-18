@@ -371,3 +371,7 @@ hs.hotkey.bind(HYPER0, 'u', tileVertically)
 hs.hotkey.bind(HYPER1, '/', foo);
 
 hs.hotkey.bind({'option'}, 't', tabSearch)
+
+hs.hotkey.bind({'ctrl', 'alt'}, hs.keycodes.map['tab'], function()
+  hs.eventtap.keyStroke(HYPER0, 'm');
+end)
