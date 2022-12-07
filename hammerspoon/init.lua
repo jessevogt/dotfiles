@@ -86,7 +86,9 @@ function setupMonitors()
   return screen_layout
 end
 
-SCREEN_LAYOUT = setupMonitors()
+function screenLayout()
+  return setupMonitors()
+end
 
 function moveToScreenFactory(dir)
   return function()
@@ -95,7 +97,7 @@ function moveToScreenFactory(dir)
       log.i("windows was nil so not moving") 
       return
     end
-    local targetScreen = SCREEN_LAYOUT[win:screen():id()][dir]
+    local targetScreen = screenLayout()[win:screen():id()][dir]
     if targetScreen ~= nil then
       win:moveToScreen(targetScreen, false, true, 0) 
     end
@@ -285,6 +287,8 @@ end
 
 function organize()
   local benq27 = findScreen("Benq Gw2765")
+  local mainScreen = findScreen("U32J59x")
+  local builtinScreen = findScreen("Built-in Retina Display")
 
   local CAL = "Shopify.*Calendar"
   local PIN = "📌"
@@ -292,17 +296,20 @@ function organize()
 
   local layout = {
 --    {app="Google Chrome", window=DBRD, height=0.027, actualHeight=0.088},
-    {app="Google Chrome", window=CAL,  height=0.257},
-    {app="Google Chrome", window=PIN,  height=0.330},
+    {app="Google Calendar", window=".*",  height=0.257},
+    {app="Mail", window=".*",  height=0.330},
     {app="Slack",         window=".*"} -- , height=0.386},
   }
 
   local accumHeight = 0.0
+  local organizedWindows = {}
+
   for idx, appwin in ipairs(layout) do
-      -- log.i(appwin["window"])
+      log.i(appwin["window"])
       local win = hs.application(appwin["app"]):findWindow(appwin["window"])
 
       if win ~= nil then
+        -- log.i(string.format("moving %s %s", appwin["app"], appwin["window"]))
         win:moveToScreen(benq27)
         win:moveToUnit({
           x=0,
@@ -310,18 +317,34 @@ function organize()
           w=1,
           h=appwin["actualHeight"] or appwin["height"] or (1.0 - accumHeight)
         })
+        organizedWindows[win:id()] = true
+      else
+        -- log.i("could not find screen for %s %s", appwin["app"], appwin["window"])
       end
-      accumHeight = accumHeight + appwin["height"]
+      if appwin["height"] then
+        accumHeight = accumHeight + appwin["height"]
+      end
   end
- 
-  -- for _, appwin in ipairs(layout) do
-  --     log.i(appwin["window"])
-  --     local win = hs.application(appwin["app"]):findWindow(appwin["window"])
-  --     if appwin["sendToBack"] then
-  --       log.i(appwin["window"])
-  --       win:sendToBack()
-  --     end
-  -- end
+
+  logseqWin = hs.application("Logseq"):findWindow(".*")
+  if logseqWin then
+    logseqWin:moveToScreen(builtinScreen)
+    logseqWin:maximize()
+    organizedWindows[logseqWin:id()] = true
+  end
+
+  for idx, win in ipairs(hs.window.visibleWindows()) do
+    if organizedWindows[win:id()] then
+    else
+      if mainScreen then
+        local screen = win:screen()
+        -- -if screen == benq27 or screen == builtinScreen then
+        if screen == benq27 then
+          win:moveToScreen(mainScreen, true)
+        end
+      end
+    end
+  end
 end
 
 function launchMacVimWithClipboardContents()

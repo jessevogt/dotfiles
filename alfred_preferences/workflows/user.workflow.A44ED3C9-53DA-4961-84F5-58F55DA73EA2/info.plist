@@ -39,6 +39,7 @@
 				<integer>102</integer>
 				<key>script</key>
 				<string>if [[ "$1" = "bash" ]]; then
+    echo "bash -c \"${*:2}\""
 	bash -c "${*:2}"
 elif [[ "$1" = "terminal" ]]; then
 	osascript &lt;&lt;EOF

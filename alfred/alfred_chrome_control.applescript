@@ -4,6 +4,7 @@ use framework "Foundation"
 use framework "AppKit"
 use scripting additions
 
+
 -- https://developer.apple.com/library/archive/documentation/LanguagesUtilities/Conceptual/MacAutomationScriptingGuide/ManipulateText.html
 on findAndReplaceInText(theText, theSearchString, theReplacementString)
 	set AppleScript's text item delimiters to theSearchString
@@ -36,7 +37,6 @@ end makeTabInfoRecord
 on listTabs()
 	set tabInfo to {}
 	tell application "Google Chrome"
-		
 		tell application "System Events" to tell process "Google Chrome"
 			set processWindowTitles to item 1 of {title} of windows
 		end tell
@@ -44,29 +44,44 @@ on listTabs()
 		set windowIds to item 1 of {id} of windows
 		set windowCount to length of windowIds
 		
+		if false then
+			log ("length of processWindowTitles:" & length of processWindowTitles & " windowCount:" & windowCount)
+			repeat with index from 1 to length of processWindowTitles
+				log (item index of processWindowTitles)
+			end repeat
+			repeat with index from 1 to windowCount
+				log (title of (item index of windows) as string)
+			end repeat
+		end if
+		
 		set allTabTitlesAndUrls to {title, URL} of tabs of windows
 		set allTabTitles to item 1 of allTabTitlesAndUrls
 		set allTabUrls to item 2 of allTabTitlesAndUrls
+		set processWindowIndex to 0
 		
 		repeat with windowIndex from 1 to windowCount
 			set windowId to item windowIndex of windowIds
 			set aWindow to item windowIndex of windows
 			
-			set groupExtractItems to my splitText(item windowIndex of processWindowTitles, " - Part of group ")
-			set hasGroup to length of groupExtractItems > 1
-			
-			set tabTitles to item windowIndex of allTabTitles
-			set tabUrls to item windowIndex of allTabUrls
-			set tabCount to length of tabTitles
-			
-			repeat with tabIndex from 1 to tabCount
-				set aTitle to my jsonSafeString(item tabIndex of tabTitles)
-				if hasGroup then
-					set aTitle to (item 1 of my splitText(item 2 of groupExtractItems, " - ")) & ": " & aTitle
-				end if
-				set aUrl to my cleanUrl(item tabIndex of tabUrls)
-				set end of tabInfo to my makeTabInfoRecord(aUrl, aTitle, windowId, tabIndex)
-			end repeat
+			-- started causing a problem when using the Meet app without this check
+			if (title of aWindow) as string is not "" then
+				set processWindowIndex to processWindowIndex + 1
+				set groupExtractItems to my splitText(item processWindowIndex of processWindowTitles, " - Part of group ")
+				set hasGroup to length of groupExtractItems > 1
+				
+				set tabTitles to item windowIndex of allTabTitles
+				set tabUrls to item windowIndex of allTabUrls
+				set tabCount to length of tabTitles
+				
+				repeat with tabIndex from 1 to tabCount
+					set aTitle to my jsonSafeString(item tabIndex of tabTitles)
+					if hasGroup then
+						set aTitle to (item 1 of my splitText(item 2 of groupExtractItems, " - ")) & ": " & aTitle
+					end if
+					set aUrl to my cleanUrl(item tabIndex of tabUrls)
+					set end of tabInfo to my makeTabInfoRecord(aUrl, aTitle, windowId, tabIndex)
+				end repeat
+			end if
 		end repeat
 	end tell
 	return tabInfo

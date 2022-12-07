@@ -143,25 +143,27 @@
 		<key>8F580F09-CEAD-4420-BD16-B3205A9DE889</key>
 		<dict>
 			<key>xpos</key>
-			<integer>845</integer>
+			<real>845</real>
 			<key>ypos</key>
-			<integer>395</integer>
+			<real>395</real>
 		</dict>
 		<key>9EB648D4-E9CC-4C25-B704-A111743B62C9</key>
 		<dict>
 			<key>xpos</key>
-			<integer>435</integer>
+			<real>435</real>
 			<key>ypos</key>
-			<integer>400</integer>
+			<real>400</real>
 		</dict>
 		<key>C6632A99-0701-49EE-88C1-757F9F6376BA</key>
 		<dict>
 			<key>xpos</key>
-			<integer>695</integer>
+			<real>695</real>
 			<key>ypos</key>
-			<integer>320</integer>
+			<real>320</real>
 		</dict>
 	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
 	<key>variables</key>
 	<dict>
 		<key>alfred_chrome_control_mode</key>

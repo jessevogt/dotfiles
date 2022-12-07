@@ -49,5 +49,6 @@
   "workbench.colorTheme": "Default Light+",
   "editor.fontSize": 14,
   "terminal.integrated.scrollback": 10000,
-  "window.zoomLevel": -1
+  "diffEditor.renderSideBySide": false,
+  "window.zoomLevel": 1
 }
