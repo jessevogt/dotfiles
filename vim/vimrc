@@ -26,47 +26,24 @@ autocmd FileType json setlocal shiftwidth=2 tabstop=2
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType html setlocal shiftwidth=2 tabstop=2
 
+set textwidth=120
 set ruler
 set number
 
-if has("linux")
-    set rtp+=~/.vim/fzf
-elseif has("mac")
-    if isdirectory("/usr/local/opt/fzf")
-        set rtp+=/usr/local/opt/fzf
-    elseif isdirectory("/opt/homebrew/opt/fzf")
-        set rtp+=/opt/homebrew/opt/fzf
-    endif
-endif
+function! FZF() abort
+    let l:tempname = tempname()
+    " fzf | awk '{ print $1":1:0" }' > file
+    execute 'silent !fzf -i --multi ' . '| awk ''{ print $1":1:0" }'' > ' . fnameescape(l:tempname)
+    try
+        execute 'cfile ' . l:tempname
+        redraw!
+    finally
+        call delete(l:tempname)
+    endtry
+endfunction
 
-set rtp+=~/.vim/plugin
+" :Files
+command! -nargs=* Files call FZF()
 
-if has("gui_running")
-    if has("gui_macvim")
-        set guifont=Monaco:h16
-        macmenu &File.Print key=<nop>
-    endif
-endif
-
-colorscheme slate
-
-nnoremap <silent> <D-p> :FZF<cr>
-inoremap <silent> <D-p> <Esc>:FZF<cr>
-nnoremap <silent> <C-p> :FZF<cr>
-inoremap <silent> <C-p> <Esc>:FZF<cr>
-
-nnoremap <silent> <D-B> :Buffer<cr>
-inoremap <silent> <D-B> <Esc>:Buffer<cr>
-nnoremap <silent> <C-B> :Buffer<cr>
-inoremap <silent> <C-B> <Esc>:Buffer<cr>
-
-nnoremap <silent> <Leader>rg :Rg <C-R><C-W><CR>
-
-nnoremap <leader>nn :NERDTreeFocus<CR>
-" nnoremap <C-n> :NERDTree<CR>
-" nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <leader>nf :NERDTreeFind<CR>
-
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
+" \ff
+nnoremap <leader>ff :Files<cr>

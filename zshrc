@@ -1,115 +1,47 @@
-export DOTFILES_PATH=$(dirname $(readlink $HOME/.zshrc))
+autoload -Uz promptinit
+promptinit
+prompt adam1
 
-autoload -Uz vcs_info
-precmd_functions+=( vcs_info )
+autoload -Uz compinit
+compinit
 
-zstyle ':vcs_info:git:*' check-for-changes true
-zstyle ':vcs_info:*' unstagedstr '*'
-zstyle ':vcs_info:*' stagedstr '+'
-zstyle ':vcs_info:git:*' formats '%F{200}[%b%u%c]%f'
-zstyle ':vcs_info:*' enable git
+setopt histignorealldups sharehistory
 
-if [ -f /etc/zsh/zshrc.default.inc.zsh ]; then
-    source /etc/zsh/zshrc.default.inc.zsh
-else
-    setopt PROMPT_SUBST
-    
-    case $(hostname) in
-        carrot*|jesse-sh-*|circleup*)
-            host_prompt=''
-            ;;
-        spin)
-            host_prompt=" $(cat /etc/spin/machine/fqdn | cut -d"." -f1) 🌪 "
-            ;;
-        *)
-            host_prompt=' %m'
-            ;;
-    esac
-    
-    export PROMPT='%(?.%F{green}√.%F{red}?%?)%f'$host_prompt' %B%~%b ${vcs_info_msg_0_} $ '
+HISTSIZE=100000
+SAVEHIST=100000
+HISTFILE=~/.zsh_history
+
+bindkey -e
+
+alias tmi="tmux -CC attach || tmux -CC"
+alias ls="ls --color=auto"
+
+zstyle ':completion:*' auto-description 'specify: %d'
+zstyle ':completion:*' completer _expand _complete _correct _approximate
+zstyle ':completion:*' format 'Completing %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select=2
+eval "$(dircolors -b)"
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle ':completion:*' verbose true
+
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+
+# sudo snap alias microk8s.kubectl mk
+if type mk > /dev/null; then
+  source <(mk completion zsh | sed "s/kubectl/mk/g")
 fi
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    alias ls="ls -G"
-
-    export PATH="$PATH:/Applications/MacVim.app/Contents/bin/"
-
-    if [[ -f /opt/homebrew/bin/brew ]]; then
-        eval $(/opt/homebrew/bin/brew shellenv)
-    elif [[ -f /usr/local/bin/brew ]]; then
-        eval $(/usr/local/bin/brew shellenv)
-    else
-        echo "HOMEBREW NOT FOUND"
-    fi
-else
-    alias ls="ls --color=auto"
+if type direnv > /dev/null; then
+  eval "$(direnv hook zsh)"
 fi
 
-alias gpf="git push --force-with-lease"
-alias gp="git push"
-alias greset='git reset --hard origin/$(git name-rev --name-only HEAD)'
-alias killrails="pkill -fi -9 rails"
 
-export EDITOR=vim
-bindkey -e # still use emacs at prompt even though default editor is vim
-
-setopt SHARE_HISTORY
-setopt EXTENDED_HISTORY
-setopt HIST_FIND_NO_DUPS
-export HISTTIMEFORMAT="[%F %T] "
-export HISTFILE=~/.zsh_history
-export HISTFILESIZE=1000000000
-export HISTSIZE=1000000000
-
-export PATH="$PATH:$DOTFILES_PATH/scripts"
-
-function setup_shopify() {
-    echo "setting up shopify common"
-    
-    alias style="dev style --include-branch-commits"
-    
-    function watch-and-test() {
-        local test_args="${@[-1]}"
-        shift -p
-        echo "watching: $@"
-        echo "running: bin/rails test $test_args"
-        watchman-make -p $@ --run "bin/rails test $test_args"
-    }
-}
-
-function setup_shopify_mac() {
-    echo "setting up shopify mac"
-
-    export PATH=$PATH:/Users/jessevogt/src/github.com/Shopify/jessevogt/scripts
-
-    if [[ -f /opt/dev/dev.sh ]]; then
-        . /opt/dev/dev.sh
-    fi
-
-    if [[ -f ~/.nix-profile/etc/profile.d/nix.sh ]]; then
-        . ~/.nix-profile/etc/profile.d/nix.sh
-    fi
-
-    [[ -f /opt/dev/sh/chruby/chruby.sh ]] && type chruby >/dev/null 2>&1 || chruby () { source /opt/dev/sh/chruby/chruby.sh; chruby "$@"; }
-}
-
-function is_env() {
-    if [[ -f ~/.myenv ]]; then
-        grep -e "^$1$" -- ~/.myenv > /dev/null 2>&1
-    else
-        return 1
-    fi
-}
-
-is_env "shopify_.*" && setup_shopify
-is_env "shopify_mac" && setup_shopify_mac
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/jesse/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jesse/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/jesse/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jesse/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
-true
-
-[[ -x /opt/homebrew/bin/brew ]] && eval $(/opt/homebrew/bin/brew shellenv)

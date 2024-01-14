@@ -1,8 +1,0 @@
-{
-  "alfredsnippet" : {
-    "snippet" : "<details>\n<summary>SUMMARY<\/summary>\n```\nCONTENT\n```\n<\/details>",
-    "uid" : "2CD95485-4ABA-4586-809A-0AE3FD180D8A",
-    "name" : "Github Collapsible Section",
-    "keyword" : ";;collapse"
-  }
-}
